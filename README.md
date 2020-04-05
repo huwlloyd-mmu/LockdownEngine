@@ -7,6 +7,8 @@ Games will appear in folders __LJ1__, __LJ2__... Each will have it's own frozen 
 
 Dependencies - assumes SFML-2.5.1 is installed in the same top level folder as _LockdownEngine_
 
+Not including game data for any of these - this will be on the associated itch.io page
+
 ### Games
 
 __LJ1__: A bubble burst game, for the first theme 'Power of 2'.  [Game Page](https://hml.itch.io/2048buster) 
