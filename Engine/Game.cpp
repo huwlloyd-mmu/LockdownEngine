@@ -1,5 +1,6 @@
 #include <iostream>
 #include "game.h"
+#include "camera.h"
 
 using namespace LE;
 
@@ -13,6 +14,7 @@ Timer Game::timer;
 int Game::mbBuffer;
 bool Game::mouseButtons[2][MouseButtons::MB_COUNT];
 DebugPrint Game::dbg;
+Camera Game::camera;
 
 void Game::ClearInputs()
 {
@@ -120,6 +122,7 @@ void Game::Run()
 		// Clear screen
 		window.clear();
 		// Update the window
+		window.setView(camera.GetView());
 		Draw(window);
 		window.display();
 	}

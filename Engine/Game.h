@@ -9,7 +9,8 @@
 
 namespace LE
 {
-	// this is the main class with everything in. I think it should probably be all static. You can't really have
+	class Camera; // forward dec, camera.h includes game.h
+		// this is the main class with everything in. I think it should probably be all static. You can't really have
 	// more than one game.
 	class Game
 	{
@@ -22,6 +23,9 @@ namespace LE
 		static AssetManager assets;
 		// timer
 		static Timer timer;
+		// view
+		static Camera camera;
+
 		// mouse stuff
 		static int mbBuffer;
 		static bool mouseButtons[2][MouseButtons::MB_COUNT];
@@ -54,5 +58,8 @@ namespace LE
 		static const Vec2& GetMousePos() { return mousePos; }
 		static void DebugOut(const std::string& line) { Game::dbg.AddLine(line); }
 		static GameObject* FindObject(const std::string& name);
+		static float GetWindowWidth()  { return windowInfo.GetWidth(); }
+		static float GetWindowHeight() { return windowInfo.GetHeight(); }
+		static Camera& GetCamera() { return camera; }
 	};
 }

@@ -14,6 +14,8 @@ public:
 	void SetHeight(int nHeight) { height = nHeight; }
 	void SetTitle(const std::string& nTitle) { title = nTitle; }
 	void SetFullscreen(bool bFull) { fullscreen = bFull; }
+	float GetWidth() const { return width; }
+	float GetHeight() const { return height; }
 	void Create() 
 	{ 
 		window = new sf::RenderWindow(sf::VideoMode(width, height), title, fullscreen ? sf::Style::Fullscreen : sf::Style::Default); 
