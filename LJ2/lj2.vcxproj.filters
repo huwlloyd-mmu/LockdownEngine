@@ -23,5 +23,8 @@
     <ClCompile Include="ShadowGame.cpp">
       <Filter>C++ Files</Filter>
     </ClCompile>
+    <ClCompile Include="City.cpp">
+      <Filter>C++ Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

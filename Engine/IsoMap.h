@@ -22,8 +22,8 @@ namespace LE
 		IsoMapComponent() {}
 		IsoMapComponent(int nx, int ny, float cellSize) : nx(nx), ny(ny), cellSize(cellSize), map(new int[nx*ny]) 
 		{
-			// flood fill to zero by default
-			std::memset(map, 0, nx * ny * sizeof(unsigned int));
+			// flood fill to -1 by default
+			std::memset(map, 0xFF, nx * ny * sizeof(unsigned int));
 		}
 		unsigned int AddTile(const Texture& tex)
 		{
@@ -50,11 +50,13 @@ namespace LE
 				int jj = j;
 				while (ii <= j && ii < nx)
 				{
-					// use ii, jj here
-					SpriteComponent sc(tiles[map[ii * ny + jj]], cellSize*2);
-					sprites.push_back(sc);
-					Vec2 worldOffset = MapToIso(Vec2( cellSize*(ii + 0.5f), cellSize*(jj + 0.5f)));
-					spriteOffsets.push_back(sf::Vector2f(worldOffset.x, worldOffset.y));
+					if (map[ii * ny + jj] != 0xFFFFFFFF)
+					{
+						SpriteComponent sc(tiles[map[ii * ny + jj]], cellSize * 2);
+						sprites.push_back(sc);
+						Vec2 worldOffset = MapToIso(Vec2(cellSize * (ii + 0.5f), cellSize * (jj + 0.5f)));
+						spriteOffsets.push_back(sf::Vector2f(worldOffset.x, worldOffset.y));
+					}
 					++ii; --jj;
 				}
 			}
@@ -65,11 +67,13 @@ namespace LE
 				int jj = ny-1;
 				while (jj >= 0 && ii < nx)
 				{
-					// use ii, jj here
-					SpriteComponent sc(tiles[map[ii * ny + jj]], cellSize * 2);
-					sprites.push_back(sc);
-					Vec2 worldOffset = MapToIso(Vec2(cellSize * (ii + 0.5f), cellSize * (jj + 0.5f)));
-					spriteOffsets.push_back(sf::Vector2f(worldOffset.x, worldOffset.y));
+					if (map[ii * ny + jj] != 0xFFFFFFFF)
+					{
+						SpriteComponent sc(tiles[map[ii * ny + jj]], cellSize * 2);
+						sprites.push_back(sc);
+						Vec2 worldOffset = MapToIso(Vec2(cellSize * (ii + 0.5f), cellSize * (jj + 0.5f)));
+						spriteOffsets.push_back(sf::Vector2f(worldOffset.x, worldOffset.y));
+					}
 					++ii; --jj;
 				}
 			}

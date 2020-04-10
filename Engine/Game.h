@@ -48,6 +48,10 @@ namespace LE
 			levels[curLevel]->AddObject(newObj); 
 			return newObj;
 		}
+		static void AddToLevel(GameObject* o)
+		{
+			levels[curLevel]->AddObject(o);
+		}
 		static void DestroyObject(GameObject* obj)
 		{
 			levels[curLevel]->DeleteObject(obj);
