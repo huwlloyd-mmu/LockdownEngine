@@ -24,7 +24,7 @@ namespace LE
 		}
 		virtual void Draw(sf::RenderWindow& window, const sf::Transform& transform)
 		{
-			sf::Transform t = transform;
+			sf::Transform t = transform;	
 			window.draw(text, t);
 		}
 		void SetText(const std::string& t) { text.setString(t); }

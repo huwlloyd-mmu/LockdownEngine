@@ -73,7 +73,19 @@ void Game::Update(float dt)
 
 void Game::Draw(sf::RenderWindow &window )
 {
+	std::list<GameObject*> ui_obj;
+	window.setView(camera.GetView());
 	for (auto o : levels[curLevel]->GetObjectList())
+	{
+		if (o->IsUI())
+			ui_obj.push_back(o);
+		else
+			o->Draw(window);
+	}
+	// draw the ui
+	
+	window.setView(sf::View( sf::FloatRect(0.0f, 0.0f, windowInfo.GetWidth(), windowInfo.GetHeight())));
+	for (auto o : ui_obj)
 		o->Draw(window);
 	// draw the debug text
 	//dbg.Draw();
@@ -99,6 +111,14 @@ void Game::Run()
 	float time = 0.0f;
 	timer.Reset();
 	ClearInputs();
+
+	// FPS display text
+	sf::Text fpsText;
+	fpsText.setFont(*Assets().GetFont("data/Roboto-Regular.ttf"));
+	fpsText.setCharacterSize(15);
+	fpsText.setFillColor(sf::Color(255, 0, 0, 255));
+	fpsText.setOutlineColor(sf::Color(255, 0, 0, 255));
+
 	while (window.isOpen())
 	{
 		// Process events
@@ -117,16 +137,40 @@ void Game::Run()
 			}
 		}
 		float newTime = timer.Elapsed();
-		Update(newTime-time);
+		float delta = newTime - time;
+		Update(delta);
 		time = newTime;
 		// Clear screen
 		window.clear();
 		// Update the window
-		window.setView(camera.GetView());
 		Draw(window);
+		float fps = 1.0f / delta;
+		// show fps
+		sf::Transform t;
+		t.translate(10, 10);
+		fpsText.setString(std::to_string(fps));
+		window.draw(fpsText, t);
+
 		window.display();
+
 	}
 
 
 	timer.Reset();
+}
+
+Vec2 Game::GetMousePosWorld()
+{
+	float screenToWorld = camera.GetWidth() / windowInfo.GetWidth();
+	float x = mousePos.x - windowInfo.GetWidth() / 2;
+	float y = mousePos.y - windowInfo.GetHeight() / 2;
+	x = x * screenToWorld + camera.GetPos().x;
+	y = y * screenToWorld + camera.GetPos().y;
+	return Vec2(x, y);
+}
+GameObject* Game::SpawnCopy( GameObject *o )
+{
+	GameObject* newObj = o->Clone();
+	levels[curLevel]->AddObject(newObj);
+	return newObj;
 }

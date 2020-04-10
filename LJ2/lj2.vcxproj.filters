@@ -15,6 +15,9 @@
     <ClInclude Include="City.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="DbgPosition.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

@@ -19,6 +19,7 @@ namespace LE
 		Vec2 pivot;
 		float rot;
 		bool active = true;
+		bool ui = false; // ui objects are rendered in screen space, and drawn after everything else
 		std::string name = "default";
 	public:
 		GameObject() {}
@@ -50,6 +51,7 @@ namespace LE
 			for (auto c : components)
 				c->Draw(window, getTransform());
 		}
+		void SetUI(bool nui) { ui = nui; } 
 		const std::vector<Component*>& GetComponents() const { return components; }
 		void SetPosition(const Vec2& npos) { SetPosition(npos.x, npos.y); }
 		void SetPosition(float x, float y) { pos = Vec2(x, y); setPosition(sf::Vector2f(x, y)); }
@@ -62,6 +64,7 @@ namespace LE
 		void SetActive(bool bNewActive) { active = bNewActive; }
 		void SetName(const std::string& newName) { name = newName; }
 		const std::string& GetName() const { return name; }
+		bool IsUI() const { return ui; }
 		GameObject *Clone()
 		{
 			// spawn a copy and add it to the current level of the game

@@ -2,6 +2,7 @@
 #include "LockdownEngine.h"
 #include "IsoMap.h"
 #include "city.h"
+#include "DbgPosition.h"
 #include <random>
 
 using namespace LE;
@@ -15,7 +16,9 @@ void ShadowGame::Run()
 	LE::Game::AddLevel(level0);
 
 	city = new City();
+	new DebugPosition(city);
 
+	// add a co-ordinate tracker
 	LE::Game::GetCamera().SetWidth(32.0f);
 	LE::Game::GetCamera().SetPos(LE::Vec2(128.0f, 128.0f));
 	LE::Game::Run();

@@ -19,7 +19,7 @@ public:
 	void Create() 
 	{ 
 		window = new sf::RenderWindow(sf::VideoMode(width, height), title, fullscreen ? sf::Style::Fullscreen : sf::Style::Default); 
-		window->setVerticalSyncEnabled(true);
+		window->setVerticalSyncEnabled(false);
 	}
 
 	 sf::RenderWindow& GetSFMLWindow() const { return *window; }

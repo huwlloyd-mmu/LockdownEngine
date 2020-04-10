@@ -61,7 +61,7 @@ namespace LE
 		{
 			sf::Transform t = transform;
 			t.scale(sf::Vector2f(worldToPixelScale, worldToPixelScale));
-;			window.draw(sprite, t);
+			window.draw(sprite, t);
 		}
 
 		void SetTexture(const Texture& t) { setupSprite(t); }

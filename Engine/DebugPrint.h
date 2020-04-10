@@ -23,7 +23,7 @@ namespace LE
 		DebugPrint()
 		{
 			// load font here
-			font.loadFromFile("data/monogram.ttf");
+			//font.loadFromFile("data/monogram.ttf");
 		}
 		void SetWindow(sf::RenderWindow* w) { window = w; }
 		void AddLine(const std::string& line)

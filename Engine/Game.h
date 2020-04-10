@@ -6,9 +6,11 @@
 #include "Timer.h"
 #include "Types.h"
 #include "DebugPrint.h"
+//#include "GameObject.h"
 
 namespace LE
 {
+	class GameObject;
 	class Camera; // forward dec, camera.h includes game.h
 		// this is the main class with everything in. I think it should probably be all static. You can't really have
 	// more than one game.
@@ -42,12 +44,7 @@ namespace LE
 		static void Run(void);
 		static AssetManager& Assets() { return assets; }
 		static void AddLevel(Level* level) { levels.push_back(level); }
-		static GameObject* SpawnCopy(GameObject* o) 
-		{
-			GameObject* newObj = o->Clone();
-			levels[curLevel]->AddObject(newObj); 
-			return newObj;
-		}
+		static GameObject* SpawnCopy(GameObject* o);
 		static void AddToLevel(GameObject* o)
 		{
 			levels[curLevel]->AddObject(o);
@@ -65,5 +62,6 @@ namespace LE
 		static float GetWindowWidth()  { return windowInfo.GetWidth(); }
 		static float GetWindowHeight() { return windowInfo.GetHeight(); }
 		static Camera& GetCamera() { return camera; }
+		static Vec2 GetMousePosWorld();
 	};
 }

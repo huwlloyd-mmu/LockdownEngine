@@ -39,16 +39,16 @@ int City::GetTextureForTile( int i, int j)
 	{
 		// is this a junction tile?
 		if (tiles[i][j] == 2)
-			return 2;
+			return 8;
 		// figure out what sort of road tile
-		if (below)
-			return 9;
-		if (above)
-			return 1;
-		if (left)
-			return 24;
-		if (right)
+		if (below && !above)
 			return 16;
+		if (above && !below)
+			return 24;
+		if (left && !right)
+			return 1;
+		if (right && !left)
+			return 9;
 	}
 }
 
@@ -84,23 +84,23 @@ City::City()
 
 	// now make the tilemap
 	LE::GameObject* obj = new LE::GameObject();;
-	LE::IsoMapComponent *iso =  new LE::IsoMapComponent(nx, ny, 1.0f);
+	isoMap =  new LE::IsoMapComponent(nx, ny, 1.0f);
 	for (int i = 0; i < 4; i++)
 	{
 		for (int j = 0; j < 8; j++)
 		{
 			LE::Texture tex("data/econU_tiles.png", LE::Vec2(i * 0.25f, j * 0.125f), LE::Vec2(0.25f, 0.125f));
-			iso->AddTile(tex);
+			isoMap->AddTile(tex);
 		}
 	}
 	for (int i = 0; i < nx; i++)
 	{
 		for (int j = 0; j < ny; j++)
 		{
-			iso->SetCell(i, j, GetTextureForTile(i, j));
+			isoMap->SetCell(i, j, GetTextureForTile(i, j));
 		}
 	}
-	iso->CreateSprites();
-	obj->AddComponent(iso);
+	isoMap->CreateSprites();
+	obj->AddComponent(isoMap);
 	LE::Game::AddToLevel(obj);
 }

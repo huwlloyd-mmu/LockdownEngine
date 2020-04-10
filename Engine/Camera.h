@@ -31,5 +31,8 @@ namespace LE
 			view.reset(sf::FloatRect(pos.x - width / 2, pos.y - height / 2, width, height));
 			return view;
 		}
+		float GetWidth() const { return width; }
+		float GetHeight() const { return height; }
+		const Vec2& GetPos() const { return pos;  }
 	};
 }
