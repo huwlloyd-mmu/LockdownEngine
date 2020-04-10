@@ -68,7 +68,7 @@
     <ClInclude Include="Sound.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header.h">
+    <ClInclude Include="IsoMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

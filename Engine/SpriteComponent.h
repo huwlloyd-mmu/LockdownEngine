@@ -39,6 +39,19 @@ namespace LE
 			newSprite->sprite.setTextureRect(sprite.getTextureRect());
 			return newSprite;
 		}
+		bool XFlip(bool flip) 
+		{ 
+			sf::IntRect tr = sprite.getTextureRect();
+			tr.width *= -1;
+			sprite.setTextureRect(tr);
+		}
+		bool YFlip(bool flip) 
+		{ 
+			sf::IntRect tr = sprite.getTextureRect();
+			tr.height *= -1;
+			sprite.setTextureRect(tr);
+		}
+
 		SpriteComponent(const Texture& tex, float nWorldSize )
 		{
 			worldSize = nWorldSize;

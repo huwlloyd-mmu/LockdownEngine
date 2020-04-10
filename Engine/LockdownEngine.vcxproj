@@ -145,7 +145,7 @@
     <ClInclude Include="DebugPrint.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
-    <ClInclude Include="Header.h" />
+    <ClInclude Include="IsoMap.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="LockdownEngine.h" />
     <ClInclude Include="Music.h" />
