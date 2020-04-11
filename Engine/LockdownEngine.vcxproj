@@ -143,6 +143,7 @@
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="DebugLines.h" />
     <ClInclude Include="DebugPrint.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />

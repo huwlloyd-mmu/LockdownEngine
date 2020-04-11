@@ -45,6 +45,7 @@ namespace LE
 		static AssetManager& Assets() { return assets; }
 		static void AddLevel(Level* level) { levels.push_back(level); }
 		static GameObject* SpawnCopy(GameObject* o);
+		static sf::RenderWindow& GetRenderWindow() { return windowInfo.GetSFMLWindow(); }
 		static void AddToLevel(GameObject* o)
 		{
 			levels[curLevel]->AddObject(o);

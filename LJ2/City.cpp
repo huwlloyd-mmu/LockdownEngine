@@ -66,7 +66,6 @@ int City::GetTextureForTile( int i, int j)
 		if (jright && !below)
 			return 6;
 
-
 		if (below && !above)
 			return 16;
 		if (above && !below)

@@ -19,7 +19,7 @@ void ShadowGame::Run()
 	new DebugPosition(city);
 
 	// add a co-ordinate tracker
-	LE::Game::GetCamera().SetWidth(25.0f);
+	LE::Game::GetCamera().SetWidth(512.0f);
 	LE::Game::GetCamera().SetPos(city->WorldToIso(LE::Vec2(128.0f, 128.0f)));
 	LE::Game::Run();
 }

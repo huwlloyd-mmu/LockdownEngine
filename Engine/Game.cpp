@@ -138,6 +138,8 @@ void Game::Run()
 		}
 		float newTime = timer.Elapsed();
 		float delta = newTime - time;
+		// update the camera
+		camera.Update(delta);
 		Update(delta);
 		time = newTime;
 		// Clear screen
