@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Component.h"
 #include "SpriteComponent.h"
+#include "SpriteBatch.h"
 #include "Texture.h"
 #include <vector>
 
@@ -16,8 +17,8 @@ namespace LE
 		std::vector<Texture> tiles;
 		int *map; // the map, tile indices for cells i*ny + j
 		std::vector<SpriteComponent> sprites;
+		SpriteBatchComponent* spriteBatch;
 		std::vector<sf::Vector2f> spriteOffsets;
-
 	public:
 		IsoMapComponent() {}
 		IsoMapComponent(int nx, int ny, float cellSize) : nx(nx), ny(ny), cellSize(cellSize), map(new int[nx*ny]) 
@@ -43,7 +44,14 @@ namespace LE
 		void CreateSprites()
 		{
 			std::shared_ptr<GameObject> obj = std::make_shared<GameObject>();
+			
+			std::vector<Vec2> worldOffsets;
+			std::vector<Vec2> worldSize;
+			std::vector<Texture> tex;
+
 			// bottom triangle, i.e. all diagonals starting at the left hand edge
+
+
 			for (int j = 0; j < ny; j++)
 			{
 				int ii = 0;
@@ -52,10 +60,13 @@ namespace LE
 				{
 					if (map[ii * ny + jj] != 0xFFFFFFFF)
 					{
-						SpriteComponent sc(tiles[map[ii * ny + jj]], cellSize * 2);
-						sprites.push_back(sc);
+						//SpriteComponent sc(tiles[map[ii * ny + jj]], cellSize * 2);
+						//sprites.push_back(sc);
 						Vec2 worldOffset = MapToIso(Vec2(cellSize * (ii + 0.5f), cellSize * (jj + 0.5f)));
-						spriteOffsets.push_back(sf::Vector2f(worldOffset.x, worldOffset.y));
+						//spriteOffsets.push_back(sf::Vector2f(worldOffset.x, worldOffset.y));
+						worldOffsets.push_back(worldOffset);
+						worldSize.push_back(Vec2(cellSize * 2, cellSize));
+						tex.push_back(tiles[map[ii * ny + jj]]);
 					}
 					++ii; --jj;
 				}
@@ -69,26 +80,34 @@ namespace LE
 				{
 					if (map[ii * ny + jj] != 0xFFFFFFFF)
 					{
-						SpriteComponent sc(tiles[map[ii * ny + jj]], cellSize * 2);
-						sprites.push_back(sc);
+						//SpriteComponent sc(tiles[map[ii * ny + jj]], cellSize * 2);
+						//sprites.push_back(sc);
 						Vec2 worldOffset = MapToIso(Vec2(cellSize * (ii + 0.5f), cellSize * (jj + 0.5f)));
-						spriteOffsets.push_back(sf::Vector2f(worldOffset.x, worldOffset.y));
+						//spriteOffsets.push_back(sf::Vector2f(worldOffset.x, worldOffset.y));
+						worldOffsets.push_back(worldOffset);
+						worldSize.push_back(Vec2(cellSize * 2, cellSize));
+						tex.push_back(tiles[map[ii * ny + jj]]);
+
 					}
 					++ii; --jj;
 				}
 			}
-
+			spriteBatch = new SpriteBatchComponent(worldOffsets, worldSize, tex);
 		}
 
 		virtual Component* Clone() const { return nullptr; }// you ain't gonna need it 
 		virtual void Draw(sf::RenderWindow& window, const sf::Transform& transform)
 		{
+#if 0
 			for (int i = 0; i < sprites.size(); i++)
 			{
 				sf::Transform t = transform;
 				t.translate(spriteOffsets[i]);
 				sprites[i].Draw(window, t);
 			}
+#else
+			spriteBatch->Draw(window, transform);
+#endif
 		}
 
 

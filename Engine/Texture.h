@@ -20,6 +20,7 @@ namespace LE
 			textureRect.height = size.y * tsize.y;
 		}
 		const sf::Texture& GetSFTexture() const { return *texture;  }
+		sf::Texture* GetSFTexturePointer() const { return texture;  }
 		const sf::IntRect& GetSFTextureRect() const { return textureRect;  }
 		float GetWidth() const { return textureRect.width; } 
 		float GetHeight() const { return textureRect.height; }

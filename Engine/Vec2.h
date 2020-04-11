@@ -12,6 +12,11 @@ namespace LE
 		Vec2() : x(0.0f), y(0.0f) {}
 		Vec2(float x, float y) : x(x), y(y) {}
 		Vec2(const Vec2& other) : x(other.x), y(other.y) {}
+		// some arithmetic operators
+		Vec2 operator*(const Vec2& other) const { return Vec2(x * other.x, y * other.y); }
+		Vec2 operator*(float fac) const { return Vec2(x * fac, y * fac); }
+		Vec2 operator+(const Vec2& other) const { return Vec2(x + other.x, y + other.y); }
+		Vec2 operator-(const Vec2& other) const { return Vec2(x - other.x, y - other.y); }
 		// that'll do for now.
 	};
 }
