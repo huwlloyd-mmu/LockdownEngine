@@ -14,7 +14,7 @@ int City::GetTextureForTile( int i, int j)
 
 	if (!here)
 	{
-		// not a road tile, but maybe a pvement tile
+		// not a road tile, but maybe a pavement tile
 		if (below)
 		{
 			if (!right && !left)
@@ -41,6 +41,32 @@ int City::GetTextureForTile( int i, int j)
 		if (tiles[i][j] == 2)
 			return 8;
 		// figure out what sort of road tile
+		
+		// first check junctions
+		bool jbelow = j > 0 && tiles[i][j - 1] == 2;
+		bool jabove = j < ny - 1 && tiles[i][j + 1] == 2;
+		bool jleft = i > 0 && tiles[i - 1][j] == 2;
+		bool jright = i < nx - 1 && tiles[i + 1][j] == 2;
+
+		if (jabove && !left)
+			return 22;
+		if (jabove && !right)
+			return 14;
+		if (jbelow && !left ) 
+			return 23;
+		if (jbelow && !right)
+			return 15;
+
+		if (jleft && !above)
+			return 30;
+		if (jleft && !below)
+			return 7;
+		if (jright && !above)
+			return 29;
+		if (jright && !below)
+			return 6;
+
+
 		if (below && !above)
 			return 16;
 		if (above && !below)

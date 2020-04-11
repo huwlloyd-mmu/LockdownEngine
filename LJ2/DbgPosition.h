@@ -18,7 +18,7 @@ public:
 		if (text != nullptr)
 		{
 			Vec2 pos = Game::GetMousePosWorld();
-			Vec2 isoPos = c->WorldToIso(pos);
+			Vec2 isoPos = c->IsoToWorld(pos);
 			parent->SetPosition(Game::GetMousePos());
 
 			std::string message = "" + std::to_string(isoPos.x) + " " + std::to_string(isoPos.y);

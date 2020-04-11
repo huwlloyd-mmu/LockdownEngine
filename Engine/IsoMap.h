@@ -60,12 +60,9 @@ namespace LE
 				{
 					if (map[ii * ny + jj] != 0xFFFFFFFF)
 					{
-						//SpriteComponent sc(tiles[map[ii * ny + jj]], cellSize * 2);
-						//sprites.push_back(sc);
-						Vec2 worldOffset = MapToIso(Vec2(cellSize * (ii + 0.5f), cellSize * (jj + 0.5f)));
-						//spriteOffsets.push_back(sf::Vector2f(worldOffset.x, worldOffset.y));
+						Vec2 worldOffset = MapToIso(Vec2(cellSize * ii, cellSize * jj));
 						worldOffsets.push_back(worldOffset);
-						worldSize.push_back(Vec2(cellSize * 2, cellSize));
+						worldSize.push_back(Vec2(cellSize*2, cellSize));
 						tex.push_back(tiles[map[ii * ny + jj]]);
 					}
 					++ii; --jj;
@@ -80,12 +77,9 @@ namespace LE
 				{
 					if (map[ii * ny + jj] != 0xFFFFFFFF)
 					{
-						//SpriteComponent sc(tiles[map[ii * ny + jj]], cellSize * 2);
-						//sprites.push_back(sc);
-						Vec2 worldOffset = MapToIso(Vec2(cellSize * (ii + 0.5f), cellSize * (jj + 0.5f)));
-						//spriteOffsets.push_back(sf::Vector2f(worldOffset.x, worldOffset.y));
+						Vec2 worldOffset = MapToIso(Vec2(cellSize * ii, cellSize * jj));
 						worldOffsets.push_back(worldOffset);
-						worldSize.push_back(Vec2(cellSize * 2, cellSize));
+						worldSize.push_back(Vec2(cellSize*2, cellSize));
 						tex.push_back(tiles[map[ii * ny + jj]]);
 
 					}

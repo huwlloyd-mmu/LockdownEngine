@@ -12,4 +12,5 @@ class City
 public:
 	City();
 	LE::Vec2 WorldToIso(const LE::Vec2& pos) { return isoMap->MapToIso(pos); }
+	LE::Vec2 IsoToWorld(const LE::Vec2& pos) { return isoMap->IsoToMap(pos); }
 };
