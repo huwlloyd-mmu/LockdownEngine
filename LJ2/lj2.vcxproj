@@ -22,11 +22,13 @@
     <ClCompile Include="City.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ShadowGame.cpp" />
+    <ClCompile Include="Walkways.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="City.h" />
     <ClInclude Include="DbgPosition.h" />
     <ClInclude Include="ShadowGame.h" />
+    <ClInclude Include="Walkways.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

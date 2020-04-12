@@ -3,6 +3,8 @@
 #include "TextComponent.h"
 #include "City.h"
 #include "DebugLines.h"
+#include "Walkways.h"
+
 using namespace LE;
 
 class DBGPosBehaviour : public Component
@@ -32,13 +34,13 @@ public:
 	virtual void Draw(sf::RenderWindow& window, const sf::Transform& t)
 	{
 		// some lines
-		std::vector<Vec2> square;
-		square.push_back(Vec2(120.0, 120.0f));
-		square.push_back(Vec2(120.0, 140.0f));
-		square.push_back(Vec2(140.0, 140.0f));
-		square.push_back(Vec2(140.0, 120.0f));
-		square.push_back(Vec2(120.0, 120.0f));
-		DebugLines::Draw(square, sf::Color(0, 255, 0, 255));
+		std::vector<Vec2> dbglines;
+		for (auto e : c->walkways->e)
+		{
+			dbglines.push_back(c->WorldToIso(c->walkways->v[e.v0].pos));
+			dbglines.push_back(c->WorldToIso(c->walkways->v[e.v1].pos));
+		}
+		DebugLines::Draw(dbglines, sf::Color(0, 255, 0, 255));
 	}
 
 	virtual Component* Clone() const { return new DBGPosBehaviour(c); }

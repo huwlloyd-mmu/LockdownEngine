@@ -60,7 +60,7 @@ namespace LE
 				{
 					if (map[ii * ny + jj] != 0xFFFFFFFF)
 					{
-						Vec2 worldOffset = MapToIso(Vec2(cellSize * ii, cellSize * jj));
+						Vec2 worldOffset = MapToIso(Vec2(cellSize * ii, cellSize * jj)-Vec2(0.5f,-0.5f));
 						worldOffsets.push_back(worldOffset);
 						worldSize.push_back(Vec2(cellSize*2, cellSize));
 						tex.push_back(tiles[map[ii * ny + jj]]);
@@ -77,7 +77,7 @@ namespace LE
 				{
 					if (map[ii * ny + jj] != 0xFFFFFFFF)
 					{
-						Vec2 worldOffset = MapToIso(Vec2(cellSize * ii, cellSize * jj));
+						Vec2 worldOffset = MapToIso(Vec2(cellSize * ii, cellSize * jj) - Vec2(0.5f, -0.5f));
 						worldOffsets.push_back(worldOffset);
 						worldSize.push_back(Vec2(cellSize*2, cellSize));
 						tex.push_back(tiles[map[ii * ny + jj]]);

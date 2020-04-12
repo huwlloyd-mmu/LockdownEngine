@@ -18,6 +18,9 @@
     <ClInclude Include="DbgPosition.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Walkways.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -27,6 +30,9 @@
       <Filter>C++ Files</Filter>
     </ClCompile>
     <ClCompile Include="City.cpp">
+      <Filter>C++ Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Walkways.cpp">
       <Filter>C++ Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,6 +1,7 @@
 #include "City.h"
 #include "LockdownEngine.h"
 #include "IsoMap.h"
+#include "Walkways.h"
 
 int City::GetTextureForTile( int i, int j)
 {
@@ -95,15 +96,14 @@ City::City()
 	{
 		for (int j = 0; j < ny; j++)
 		{
-			if (i % 16 > 13 || j % 12 > 9)
+			if ( ((i % blockSizeX) < roadWidth) || ((j % blockSizeY) < roadWidth) )
 			{
 				tiles[i][j] = 1; // regular road
 			}
-			if (i % 16 > 13 && j % 12 > 9)
+			if ( ((i % blockSizeX) < roadWidth) && ((j % blockSizeY) < roadWidth))
 			{
 				tiles[i][j] = 2; // junction
 			}
-
 		}
 	}
 
@@ -128,4 +128,5 @@ City::City()
 	isoMap->CreateSprites();
 	obj->AddComponent(isoMap);
 	LE::Game::AddToLevel(obj);
+	walkways = new Walkways(this);
 }
