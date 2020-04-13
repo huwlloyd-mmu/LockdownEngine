@@ -104,13 +104,13 @@ Walkways::Walkways(City* city)
 
 				edge.v0 = v0; edge.v1 = u0;
 				e.push_back(edge);
+				v[v0].edges.push_back(edgeCount);
 				v[u0].edges.push_back(edgeCount);
-				v[u1].edges.push_back(edgeCount);
 				edgeCount++;
 
 				edge.v0 = v1; edge.v1 = u1;
 				e.push_back(edge);
-				v[u0].edges.push_back(edgeCount);
+				v[v1].edges.push_back(edgeCount);
 				v[u1].edges.push_back(edgeCount);
 				edgeCount++;
 			}
@@ -126,13 +126,13 @@ Walkways::Walkways(City* city)
 
 				edge.v0 = v0; edge.v1 = u0;
 				e.push_back(edge);
+				v[v0].edges.push_back(edgeCount);
 				v[u0].edges.push_back(edgeCount);
-				v[u1].edges.push_back(edgeCount);
 				edgeCount++;
 
 				edge.v0 = v1; edge.v1 = u1;
 				e.push_back(edge);
-				v[u0].edges.push_back(edgeCount);
+				v[v1].edges.push_back(edgeCount);
 				v[u1].edges.push_back(edgeCount);
 				edgeCount++;
 			}

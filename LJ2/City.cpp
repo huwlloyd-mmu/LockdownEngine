@@ -3,6 +3,11 @@
 #include "IsoMap.h"
 #include "Walkways.h"
 
+void CityUpdater::Update(float dt)
+{
+	city->Update(dt);
+}
+
 int City::GetTextureForTile( int i, int j)
 {
 	// used for building the base map, to figure out the road textures etc.
@@ -129,4 +134,21 @@ City::City()
 	obj->AddComponent(isoMap);
 	LE::Game::AddToLevel(obj);
 	walkways = new Walkways(this);
+
+	// add some pedestrians
+	for (int i = 0; i < 100; i++)
+	{
+		peds.push_back(new Pedestrian(this));
+	}
+	// add the updater game object
+	updater = new LE::GameObject();
+	updater->AddComponent(new CityUpdater(this));
+	LE::Game::AddToLevel(updater);
+
+}
+
+void City::Update(float dt)
+{
+	for (auto p : peds)
+		p->Update(dt);
 }

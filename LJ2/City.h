@@ -1,7 +1,19 @@
 #pragma once
 #include <vector>
 #include "IsoMap.h"
+#include "Pedestrian.h"
 class Walkways;
+
+class City; // forward dec
+class CityUpdater : public LE::Component
+{
+	City* city;
+public:
+	CityUpdater(City* city) : city(city) {}
+	virtual void Update(float dt);
+	virtual CityUpdater* Clone() const { return nullptr; }
+};
+
 class City
 {
 	// a procedural isometric city
@@ -13,6 +25,10 @@ class City
 	const int blockSizeX = 16;
 	const int blockSizeY = 12;
 	const int roadWidth = 2;
+	LE::GameObject* updater;
+	// pedestrians
+	std::vector<Pedestrian*> peds;
+	void AddPedestrian();
 public:
 	Walkways* walkways;
 	City();
@@ -23,4 +39,5 @@ public:
 	int GetRoadWidth() const { return roadWidth; }
 	int GetNX() const { return nx; }
 	int GetNY() const { return ny; }
+	void Update(float dt);
 };
