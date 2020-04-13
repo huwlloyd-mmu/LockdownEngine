@@ -12,7 +12,6 @@ namespace LE
 		float worldToPixelScale;
 		float worldSize;
 		sf::Vector2f centre;
-		SpriteComponent() {}
 
 		void setupSprite( const Texture &tex )
 		{
@@ -29,6 +28,7 @@ namespace LE
 			centre = sf::Vector2f(w * 0.5f, h * 0.5f);
 		}
 	public:
+		SpriteComponent() {}
 		virtual SpriteComponent* Clone() const
 		{
 			SpriteComponent* newSprite = new SpriteComponent();
@@ -50,6 +50,12 @@ namespace LE
 			sf::IntRect tr = sprite.getTextureRect();
 			tr.height *= -1;
 			sprite.setTextureRect(tr);
+		}
+
+		SpriteComponent(float nWorldSize)
+		{
+			// this version of the constructor used by AnimatedSpriteComponent - no texture at the time of invocation
+			worldSize = nWorldSize;
 		}
 
 		SpriteComponent(const Texture& tex, float nWorldSize )

@@ -1,14 +1,22 @@
 #include "Pedestrian.h"
 #include "Circle.h"
 #include "city.h"
+#include "AnimatedSprite.h"
 
 Pedestrian::Pedestrian(City* city) : city(city), rng(std::mt19937(std::random_device()()))
 {
+	/*
 	obj = new LE::GameObject();
 	obj->AddComponent(new LE::CircleComponent(0.5f, sf::Color(255, 0, 0, 255), sf::Color(255, 0, 0, 255)));
+	*/
+	// pick a random skin
+	std::uniform_int_distribution<int> dist(0, 24);
+	obj = LE::Game::SpawnCopy(city->pedProto[dist(rng)]);
+
 	PlaceRandomly();
-	obj->SetPosition(isoPos);
-	LE::Game::AddToLevel(obj);
+	obj->SetPosition(isoPos + LE::Vec2(0.0f,1.0f)); // offset so feet are on position
+	obj->GetComponent<LE::AnimatedSpriteComponent>()->StartMode("stand_left");
+	//LE::Game::AddToLevel(obj);
 }
 
 void Pedestrian::UpdatePosition()
@@ -20,7 +28,7 @@ void Pedestrian::UpdatePosition()
 	float edgeLength = (v1 - v0).magnitude();
 	pos = v0 + (v1 - v0) * (curEdgeDist / edgeLength);
 	isoPos = city->WorldToIso(pos);
-	obj->SetPosition(isoPos);
+	obj->SetPosition(isoPos - LE::Vec2(0.0f,1.0f));
 }
 
 void Pedestrian::PlaceRandomly()
@@ -75,12 +83,38 @@ void Pedestrian::Update(float dt)
 		}
 		else
 		{
-			// sanity check
-			if (curVertex != city->walkways->e[curEdge].v1)
-				std::cout << "bad things happening!" << std::endl;
 			curDirection = 0;
 			curEdgeDist = (city->walkways->v[city->walkways->e[curEdge].v0].pos - city->walkways->v[city->walkways->e[curEdge].v1].pos).magnitude();
 		}
+		// figure out the direction
+		if (city->walkways->v[city->walkways->e[curEdge].v0].pos.x == city->walkways->v[city->walkways->e[curEdge].v1].pos.x)
+		{
+			// y edge, so going up or down
+			float yDiff;
+			if (curDirection)
+				yDiff = city->walkways->v[city->walkways->e[curEdge].v1].pos.y - city->walkways->v[city->walkways->e[curEdge].v0].pos.y;
+			else
+				yDiff = city->walkways->v[city->walkways->e[curEdge].v0].pos.y - city->walkways->v[city->walkways->e[curEdge].v1].pos.y;
+			if (yDiff > 0.0)
+				obj->GetComponent<LE::AnimatedSpriteComponent>()->StartMode("walk_up", true);
+			else
+				obj->GetComponent<LE::AnimatedSpriteComponent>()->StartMode("walk_down", true);
+		}
+		else
+		{
+			// x edge, so going right or left
+			float xDiff;
+			if (curDirection)
+				xDiff = city->walkways->v[city->walkways->e[curEdge].v1].pos.x - city->walkways->v[city->walkways->e[curEdge].v0].pos.x;
+			else
+				xDiff = city->walkways->v[city->walkways->e[curEdge].v0].pos.x - city->walkways->v[city->walkways->e[curEdge].v1].pos.x;
+			if (xDiff > 0.0)
+				obj->GetComponent<LE::AnimatedSpriteComponent>()->StartMode("walk_right", true);
+			else
+				obj->GetComponent<LE::AnimatedSpriteComponent>()->StartMode("walk_left", true);
+		}
+
+
 	}
 	UpdatePosition();
 }

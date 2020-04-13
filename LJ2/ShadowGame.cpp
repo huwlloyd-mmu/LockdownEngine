@@ -16,10 +16,10 @@ void ShadowGame::Run()
 	LE::Game::AddLevel(level0);
 
 	city = new City();
-	new DebugPosition(city);
+	//new DebugPosition(city);
 
 	// add a co-ordinate tracker
-	LE::Game::GetCamera().SetWidth(128.0f);
+	LE::Game::GetCamera().SetWidth(32.0f);
 	LE::Game::GetCamera().SetPos(city->WorldToIso(LE::Vec2(128.0f, 128.0f)));
 	LE::Game::Run();
 }

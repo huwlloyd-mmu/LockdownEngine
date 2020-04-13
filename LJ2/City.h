@@ -28,9 +28,11 @@ class City
 	LE::GameObject* updater;
 	// pedestrians
 	std::vector<Pedestrian*> peds;
-	void AddPedestrian();
+	void AddPedestrians();
+	void MakePedProtos(); // helper function to create pedProto
 public:
 	Walkways* walkways;
+	LE::GameObject* pedProto[25]; // prototype game objects for a pedestrian
 	City();
 	LE::Vec2 WorldToIso(const LE::Vec2& pos) { return isoMap->MapToIso(pos); }
 	LE::Vec2 IsoToWorld(const LE::Vec2& pos) { return isoMap->IsoToMap(pos); }

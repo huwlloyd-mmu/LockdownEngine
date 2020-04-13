@@ -2,6 +2,7 @@
 #include "LockdownEngine.h"
 #include "IsoMap.h"
 #include "Walkways.h"
+#include "AnimatedSprite.h"
 
 void CityUpdater::Update(float dt)
 {
@@ -134,9 +135,10 @@ City::City()
 	obj->AddComponent(isoMap);
 	LE::Game::AddToLevel(obj);
 	walkways = new Walkways(this);
+	MakePedProtos();
 
 	// add some pedestrians
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < 1000; i++)
 	{
 		peds.push_back(new Pedestrian(this));
 	}
@@ -151,4 +153,38 @@ void City::Update(float dt)
 {
 	for (auto p : peds)
 		p->Update(dt);
+}
+
+void City::MakePedProtos()
+{
+	for (int j = 0; j < 25; j++)
+	{
+		// load the textures
+		LE::Texture* animFrames[36];
+		for (int i = 0; i < 36; i++)
+		{
+			int xOffset = i + i / 9; // i/9 is to skip the sitting animation
+			animFrames[i] = new LE::Texture("data/people.png", LE::Vec2((float)xOffset * (32.0f / 1376.0f), j*(1.0f/25.0f)), LE::Vec2(32.0f / 1376.0f, 1.0f / 25.0f));
+		}
+		LE::AnimatedSpriteComponent* sc = new LE::AnimatedSpriteComponent(1.0f);
+
+		std::vector<LE::Texture*> mode;
+		std::string names[8] = { "stand_up", "stand_right", "stand_left", "stand_down",
+							"walk_up", "walk_right", "walk_left", "walk_down" };
+
+		for (int i = 0; i < 4; i++)
+		{
+			// add the stand mode
+			mode.push_back(animFrames[i * 9]);
+			LE::Animation* anim = new LE::Animation(mode, 15.0f, true);
+			sc->AddMode(names[i], anim);
+			mode.clear();
+			for (int j = 0; j < 8; j++)
+				mode.push_back(animFrames[i * 9 + j]);
+			anim = new LE::Animation(mode, 15.0f, true);
+			sc->AddMode(names[i + 4], anim);
+		}
+		pedProto[j] = new LE::GameObject();
+		pedProto[j]->AddComponent(sc);
+	}
 }
