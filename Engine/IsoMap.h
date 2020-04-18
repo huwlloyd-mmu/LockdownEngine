@@ -92,19 +92,7 @@ namespace LE
 		virtual Component* Clone() const { return nullptr; }// you ain't gonna need it 
 		virtual void Draw(sf::RenderWindow& window, const sf::Transform& transform)
 		{
-#if 0
-			for (int i = 0; i < sprites.size(); i++)
-			{
-				sf::Transform t = transform;
-				t.translate(spriteOffsets[i]);
-				sprites[i].Draw(window, t);
-			}
-#else
 			spriteBatch->Draw(window, transform);
-#endif
 		}
-
-
-
 	};
 }

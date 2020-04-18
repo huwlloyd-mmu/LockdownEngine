@@ -3,9 +3,14 @@
 #include "Component.h"
 #include "Texture.h"
 #include "game.h"
+#include "camera.h"
+#include <cinttypes>
 
 namespace LE
 {
+	constexpr uint32_t SpriteFlagsSort = 1;
+	constexpr uint32_t SpriteFlagsClip = 2;
+
 	class SpriteComponent : public Component
 	{
 		sf::Sprite sprite;
@@ -28,7 +33,8 @@ namespace LE
 			centre = sf::Vector2f(w * 0.5f, h * 0.5f);
 		}
 	public:
-		SpriteComponent() {}
+		int spriteFlags;
+		SpriteComponent() : spriteFlags(0) {}
 		virtual SpriteComponent* Clone() const
 		{
 			SpriteComponent* newSprite = new SpriteComponent();
@@ -37,6 +43,7 @@ namespace LE
 			newSprite->centre = centre;
 			newSprite->sprite.setTexture(*(sprite.getTexture()));
 			newSprite->sprite.setTextureRect(sprite.getTextureRect());
+			newSprite->spriteFlags = spriteFlags;
 			return newSprite;
 		}
 		bool XFlip(bool flip) 
@@ -52,21 +59,40 @@ namespace LE
 			sprite.setTextureRect(tr);
 		}
 
-		SpriteComponent(float nWorldSize)
+		SpriteComponent(float nWorldSize) : spriteFlags(0)
 		{
 			// this version of the constructor used by AnimatedSpriteComponent - no texture at the time of invocation
 			worldSize = nWorldSize;
 		}
 
-		SpriteComponent(const Texture& tex, float nWorldSize )
+		SpriteComponent(const Texture& tex, float nWorldSize ) : spriteFlags(0)
 		{
 			worldSize = nWorldSize;
 			setupSprite(tex);
 		}
+
+		void SetClip() { spriteFlags |= SpriteFlagsClip; }
+		void SetNoClip() { spriteFlags &= ~SpriteFlagsClip; }
+		void SetSort() { spriteFlags |= SpriteFlagsSort; }
+		void SetNoSort() { spriteFlags &= ~SpriteFlagsSort; }
+
 		virtual void Draw(sf::RenderWindow& window, const sf::Transform &transform)
 		{
 			sf::Transform t = transform;
 			t.scale(sf::Vector2f(worldToPixelScale, worldToPixelScale));
+			// clip against the screen
+			if (spriteFlags & SpriteFlagsClip)
+			{
+				sf::FloatRect boundingBox = sprite.getGlobalBounds();
+				sf::FloatRect camRect = Game::GetCamera().GetRect();
+				boundingBox = t.transformRect(boundingBox);
+				if (boundingBox.left > camRect.left + camRect.width || boundingBox.left + boundingBox.width < camRect.left ||
+					boundingBox.top > camRect.top + camRect.height || boundingBox.top + boundingBox.height < camRect.top)
+				{
+					// clip
+					return;
+				}
+			}
 			window.draw(sprite, t);
 		}
 

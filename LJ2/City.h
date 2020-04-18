@@ -20,9 +20,10 @@ class City
 	const int nx = 256;
 	const int ny = 256;
 	LE::IsoMapComponent* isoMap;
+	LE::IsoMapComponent* isoMapBuildings;
 	std::vector<std::vector<unsigned int>> tiles;
 	int GetTextureForTile(int i, int j);
-	const int blockSizeX = 16;
+	const int blockSizeX = 20;
 	const int blockSizeY = 12;
 	const int roadWidth = 2;
 	LE::GameObject* updater;
@@ -30,6 +31,7 @@ class City
 	std::vector<Pedestrian*> peds;
 	void AddPedestrians();
 	void MakePedProtos(); // helper function to create pedProto
+	void PlaceBuildings();
 public:
 	Walkways* walkways;
 	LE::GameObject* pedProto[25]; // prototype game objects for a pedestrian

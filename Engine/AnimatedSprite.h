@@ -49,11 +49,17 @@ namespace LE
 		virtual AnimatedSpriteComponent* Clone() const
 		{
 			AnimatedSpriteComponent* newSc = new AnimatedSpriteComponent(worldSize);
+			newSc->sc->spriteFlags = sc->spriteFlags;
 			for (auto it = modes.begin(); it != modes.end(); ++it)
 			{
 				newSc->AddMode(it->first, it->second);
 			}
 			return newSc;
 		}
+		void SetClip() { sc->SetClip(); }
+		void SetNoClip() { sc->SetNoClip(); }
+		void SetSort() { sc->SetSort(); }
+		void SetNoSort() { sc->SetNoSort(); }
+
 	};
 }
