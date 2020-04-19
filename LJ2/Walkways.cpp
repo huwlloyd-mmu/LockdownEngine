@@ -21,27 +21,37 @@ Walkways::Walkways(City* city)
 		{
 			float x, y;
 			Vertex vert;
-			// four vertices for each cell
+			LE::Vec2 pos[4];
+			// six vertices for each cell
 			x = (border + i) * blockSizeX + roadWidth + inset;
 			y = (border + j) * blockSizeY + roadWidth + inset;
 			vert.pos = LE::Vec2(x, y);
+			pos[0] = vert.pos;
 			v.push_back(vert);
 
 			x = (border + i) * blockSizeX + roadWidth + inset;
 			y = (border + j + 1) * blockSizeY - inset;
 			vert.pos = LE::Vec2(x, y);
+			pos[1] = vert.pos;
 			v.push_back(vert);
 
 			x = (border + i+1) * blockSizeX  - inset;
 			y = (border + j+1) * blockSizeY  - inset;
 			vert.pos = LE::Vec2(x, y);
+			pos[2] = vert.pos;
 			v.push_back(vert);
 
 			x = (border + i+1) * blockSizeX - inset;
 			y = (border + j) * blockSizeY + roadWidth + inset;
 			vert.pos = LE::Vec2(x, y);
+			pos[3] = vert.pos;
 			v.push_back(vert);
 
+			vert.pos = (pos[1] + pos[2])*0.5f;
+			v.push_back(vert);
+
+			vert.pos = (pos[0] + pos[3]) * 0.5f;
+			v.push_back(vert);
 		}
 	}
 
@@ -52,12 +62,13 @@ Walkways::Walkways(City* city)
 	{
 		for (int j = 0; j < nCellsY; j++)
 		{
-			int v0, v1, v2, v3;
+			int v0, v1, v2, v3, v4, v5;
 			v0 = vCount++;
 			v1 = vCount++;
 			v2 = vCount++;
 			v3 = vCount++;
-
+			v4 = vCount++;
+			v5 = vCount++;
 			Edge edge;
 
 			edge.v0 = v0; edge.v1 = v1;
@@ -66,9 +77,15 @@ Walkways::Walkways(City* city)
 			v[v1].edges.push_back(edgeCount);
 			edgeCount++;
 
-			edge.v0 = v1; edge.v1 = v2;
+			edge.v0 = v1; edge.v1 = v4;
 			e.push_back(edge);
 			v[v1].edges.push_back(edgeCount);
+			v[v4].edges.push_back(edgeCount);
+			edgeCount++;
+
+			edge.v0 = v4; edge.v1 = v2;
+			e.push_back(edge);
+			v[v4].edges.push_back(edgeCount);
 			v[v2].edges.push_back(edgeCount);
 			edgeCount++;
 
@@ -78,10 +95,22 @@ Walkways::Walkways(City* city)
 			v[v3].edges.push_back(edgeCount);
 			edgeCount++;
 
-			edge.v0 = v3; edge.v1 = v0;
+			edge.v0 = v3; edge.v1 = v5;
 			e.push_back(edge);
 			v[v3].edges.push_back(edgeCount);
+			v[v5].edges.push_back(edgeCount);
+			edgeCount++;
+
+			edge.v0 = v5; edge.v1 = v0;
+			e.push_back(edge);
+			v[v5].edges.push_back(edgeCount);
 			v[v0].edges.push_back(edgeCount);
+			edgeCount++;
+
+			edge.v0 = v4; edge.v1 = v5;
+			e.push_back(edge);
+			v[v4].edges.push_back(edgeCount);
+			v[v5].edges.push_back(edgeCount);
 			edgeCount++;
 		}
 	}
@@ -97,10 +126,10 @@ Walkways::Walkways(City* city)
 			{
 				int v0, v1; // bottom left and bottom right vertices of this cell
 				int u0, u1; // top left and right vertices of cell below
-				v0 = (i * nCellsY + j)*4 + 0;
-				v1 = (i * nCellsY + j)*4 + 3;
-				u0 = (i * nCellsY + j - 1 )*4 + 1;
-				u1 = (i * nCellsY + j - 1 )*4 + 2;
+				v0 = (i * nCellsY + j)*6 + 0;
+				v1 = (i * nCellsY + j)*6 + 3;
+				u0 = (i * nCellsY + j - 1 )*6 + 1;
+				u1 = (i * nCellsY + j - 1 )*6 + 2;
 
 				edge.v0 = v0; edge.v1 = u0;
 				e.push_back(edge);
@@ -119,10 +148,10 @@ Walkways::Walkways(City* city)
 			{
 				int v0, v1; // top right and bottom right vertices of this cell
 				int u0, u1; // top left and bottom left vertices of cell to the right
-				v0 = (i * nCellsY + j) * 4 + 2;
-				v1 = (i * nCellsY + j) * 4 + 3;
-				u0 = ((i +1 ) * nCellsY + j) * 4 + 1;
-				u1 = ((i +1 ) * nCellsY + j) * 4 + 0;
+				v0 = (i * nCellsY + j) * 6 + 2;
+				v1 = (i * nCellsY + j) * 6 + 3;
+				u0 = ((i +1 ) * nCellsY + j) * 6 + 1;
+				u1 = ((i +1 ) * nCellsY + j) * 6 + 0;
 
 				edge.v0 = v0; edge.v1 = u0;
 				e.push_back(edge);
