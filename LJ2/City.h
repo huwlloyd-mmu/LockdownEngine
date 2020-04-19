@@ -23,7 +23,7 @@ class City
 	LE::IsoMapComponent* isoMapBuildings;
 	std::vector<std::vector<unsigned int>> tiles;
 	int GetTextureForTile(int i, int j);
-	const int blockSizeX = 20;
+	const int blockSizeX = 22;
 	const int blockSizeY = 12;
 	const int roadWidth = 2;
 	LE::GameObject* updater;

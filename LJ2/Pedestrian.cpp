@@ -28,6 +28,7 @@ void Pedestrian::UpdatePosition()
 	float edgeLength = (v1 - v0).magnitude();
 	pos = v0 + (v1 - v0) * (curEdgeDist / edgeLength);
 	isoPos = city->WorldToIso(pos);
+	obj->GetComponent<LE::AnimatedSpriteComponent>()->SetZ(isoPos.y+1.0f);
 	obj->SetPosition(isoPos - LE::Vec2(0.0f,1.0f));
 }
 

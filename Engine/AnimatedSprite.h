@@ -60,6 +60,7 @@ namespace LE
 		void SetNoClip() { sc->SetNoClip(); }
 		void SetSort() { sc->SetSort(); }
 		void SetNoSort() { sc->SetNoSort(); }
+		void SetZ(float z) { sc->SetZ(z); }
 
 	};
 }

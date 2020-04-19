@@ -4,7 +4,9 @@
 #include "City.h"
 #include "DebugLines.h"
 #include "Walkways.h"
-
+#include <iomanip>
+#include <iostream>
+#include <sstream>
 using namespace LE;
 
 class DBGPosBehaviour : public Component
@@ -22,9 +24,10 @@ public:
 			Vec2 pos = Game::GetMousePosWorld();
 			Vec2 isoPos = c->IsoToWorld(pos);
 			parent->SetPosition(Game::GetMousePos());
-
-			std::string message = "" + std::to_string(isoPos.x) + " " + std::to_string(isoPos.y);
-			text->SetText(message);
+			std::stringstream ss;
+			ss << std::setprecision(4) << isoPos.x << " " << std::setprecision(4) << isoPos.y <<
+				" " << std::setprecision(4) << pos.x << " " << std::setprecision(4) << pos.y;
+			text->SetText(ss.str());
 			if (Game::MouseClicked(MouseButtons::MB_LEFT))
 			{
 				Game::GetCamera().BlendTo(pos, 0.01f);

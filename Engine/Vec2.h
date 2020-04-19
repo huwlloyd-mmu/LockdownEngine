@@ -17,6 +17,8 @@ namespace LE
 		Vec2 operator*(float fac) const { return Vec2(x * fac, y * fac); }
 		Vec2 operator+(const Vec2& other) const { return Vec2(x + other.x, y + other.y); }
 		Vec2 operator-(const Vec2& other) const { return Vec2(x - other.x, y - other.y); }
+		void operator-=(const Vec2& other) { x -= other.x; y -= other.y; }
+		void operator+=(const Vec2& other) { x += other.x; y += other.y; }
 		float magnsqrd() { return x * x + y * y;  }
 		float magnitude() { return sqrt(magnsqrd()); }
 		Vec2 normalized() { float m = magnitude();  return Vec2(x / m, y / m); }

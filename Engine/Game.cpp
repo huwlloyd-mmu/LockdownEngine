@@ -15,6 +15,7 @@ int Game::mbBuffer;
 bool Game::mouseButtons[2][MouseButtons::MB_COUNT];
 DebugPrint Game::dbg;
 Camera Game::camera;
+std::vector<Game::SpriteSort> Game::sortList;
 
 void Game::ClearInputs()
 {
@@ -75,6 +76,9 @@ void Game::Draw(sf::RenderWindow &window )
 {
 	std::list<GameObject*> ui_obj;
 	window.setView(camera.GetView());
+	// clear the sprite sort list
+	sortList.clear();
+	// draw the sprites
 	for (auto o : levels[curLevel]->GetObjectList())
 	{
 		if (o->IsUI())
@@ -82,8 +86,14 @@ void Game::Draw(sf::RenderWindow &window )
 		else
 			o->Draw(window);
 	}
-	// draw the ui
-	
+	// if there's anything to be sorted, sort it and draw
+	std::sort(sortList.begin(), sortList.end(), [](const SpriteSort& s0, const SpriteSort& s1) {return s0.z < s1.z; });
+	// draw 
+	for (auto s : sortList)
+	{
+		window.draw(*(s.s), s.t);
+	}
+	// draw the ui	
 	window.setView(sf::View( sf::FloatRect(0.0f, 0.0f, windowInfo.GetWidth(), windowInfo.GetHeight())));
 	for (auto o : ui_obj)
 		o->Draw(window);

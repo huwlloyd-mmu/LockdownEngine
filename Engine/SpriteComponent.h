@@ -17,7 +17,7 @@ namespace LE
 		float worldToPixelScale;
 		float worldSize;
 		sf::Vector2f centre;
-
+		float z; // z-component for sorting
 		void setupSprite( const Texture &tex )
 		{
 			sprite.setTexture(tex.GetSFTexture());
@@ -75,7 +75,8 @@ namespace LE
 		void SetNoClip() { spriteFlags &= ~SpriteFlagsClip; }
 		void SetSort() { spriteFlags |= SpriteFlagsSort; }
 		void SetNoSort() { spriteFlags &= ~SpriteFlagsSort; }
-
+		void SetZ(float nz) { z = nz;  }
+		float GetZ() const { return z; }
 		virtual void Draw(sf::RenderWindow& window, const sf::Transform &transform)
 		{
 			sf::Transform t = transform;
@@ -93,7 +94,12 @@ namespace LE
 					return;
 				}
 			}
-			window.draw(sprite, t);
+			if (spriteFlags & SpriteFlagsSort)
+			{
+				Game::AddSpriteToSort(&sprite, t, z);
+			}
+			else
+				window.draw(sprite, t);
 		}
 
 		void SetTexture(const Texture& t) { setupSprite(t); }

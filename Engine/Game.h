@@ -28,6 +28,16 @@ namespace LE
 		// view
 		static Camera camera;
 
+		struct SpriteSort
+		{
+			sf::Sprite* s;
+			sf::Transform t;
+			float z;
+			SpriteSort(sf::Sprite* s, const sf::Transform& t, float z) : s(s), t(t), z(z) {}
+		};
+
+		static std::vector<Game::SpriteSort> sortList;
+
 		// mouse stuff
 		static int mbBuffer;
 		static bool mouseButtons[2][MouseButtons::MB_COUNT];
@@ -64,5 +74,10 @@ namespace LE
 		static float GetWindowHeight() { return windowInfo.GetHeight(); }
 		static Camera& GetCamera() { return camera; }
 		static Vec2 GetMousePosWorld();
+		static void AddSpriteToSort(sf::Sprite* sp, const sf::Transform& t, float z)
+		{
+			SpriteSort s(sp, t, z);
+			sortList.push_back(s);
+		}
 	};
 }

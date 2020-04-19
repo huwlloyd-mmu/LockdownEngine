@@ -3,6 +3,7 @@
 #include "IsoMap.h"
 #include "Walkways.h"
 #include "AnimatedSprite.h"
+#include "DbgPosition.h"
 
 void CityUpdater::Update(float dt)
 {
@@ -114,7 +115,8 @@ City::City()
 	}
 
 	// now make the tilemap
-	LE::GameObject* obj = new LE::GameObject();;
+	LE::GameObject* obj = new LE::GameObject();
+	//new DebugPosition(this);
 	isoMap =  new LE::IsoMapComponent(nx, ny, 1.0f);
 	for (int i = 0; i < 4; i++)
 	{
@@ -172,6 +174,7 @@ void City::MakePedProtos()
 		LE::AnimatedSpriteComponent* sc = new LE::AnimatedSpriteComponent(1.0f);
 
 		sc->SetClip();
+		sc->SetSort();
 		std::vector<LE::Texture*> mode;
 		std::string names[8] = { "stand_up", "stand_right", "stand_left", "stand_down",
 							"walk_up", "walk_right", "walk_left", "walk_down" };
@@ -196,12 +199,38 @@ void City::MakePedProtos()
 void City::PlaceBuildings()
 {
 	// for now, we'll have one building type
-	LE::Texture* tile = new LE::Texture("data/econU_buildings_1.png", LE::Vec2(256.0 / 1280.0, 480.0 / 1280.0), LE::Vec2(256.0f / 1280.0, 240.0 / 1280.0f));
 
-	// now make the render object
-	//LE::GameObject* obj = new LE::GameObject();;
-	
-	//LE::Game::AddToLevel(obj);
+	float x0 = 256;
+	float x1 = 512;
+	float y0 = 0;
+	float y1 = 160;
 
+	LE::Texture* tile = new LE::Texture("data/econU_buildings_1.png", LE::Vec2(x0 / 1280.0, y1 / 1280.0), LE::Vec2(256.0 / 1280.0, (y1-y0) / 1280.0f));
 
+	int buildingSize = blockSizeY - 4;
+	for (int x = 3; x < 256; x += blockSizeX)
+	{
+		for (int y = 3; y < 256; y += blockSizeY)
+		{
+			for (int xo = 0; xo < 2; xo++)
+			{
+				// place a building 
+				Vec2 centre = Vec2(x+xo*(buildingSize+2), y) + Vec2(buildingSize, buildingSize) * 0.5f;
+				Vec2 isoPos = isoMap->MapToIso(centre);
+				float width = buildingSize * 2.0f;
+				float height = width * (y1 - y0) / (x1 - x0);
+				float yOffset = ((y1 - y0) / (x1 - x0) - 0.5f) * buildingSize;
+				Vec2 spriteCentre = isoPos - Vec2(0, yOffset);
+				spriteCentre -= Vec2(width * 0.5, height * 0.5);
+				SpriteComponent* sc = new SpriteComponent(*tile, width);
+				sc->SetClip();
+				sc->SetSort();
+				sc->SetZ(isoPos.y);
+				GameObject* obj = new GameObject();
+				obj->SetPosition(spriteCentre);
+				obj->AddComponent(sc);
+				Game::AddToLevel(obj);
+			}
+		}
+	}
 }
