@@ -200,12 +200,45 @@ void City::PlaceBuildings()
 {
 	// for now, we'll have one building type
 
-	float x0 = 256;
-	float x1 = 512;
-	float y0 = 0;
-	float y1 = 160;
+	struct buildingtex
+	{
+		float x0 = 256;
+		float x1 = 512;
+		float y0 = 0;
+		float y1 = 160;
+	};
+	float yoffs0[] = { 0,160,320,480,704,837,1024,1277 };
+	float yoffs1[] = { 0,160,320,480,640,800,992,1127 };
+	std::vector<LE::Texture*> textures;
+	std::vector<buildingtex> tile_data;
 
-	LE::Texture* tile = new LE::Texture("data/econU_buildings_1.png", LE::Vec2(x0 / 1280.0, y1 / 1280.0), LE::Vec2(256.0 / 1280.0, (y1-y0) / 1280.0f));
+	for (int i = 1; i < 8; i++)
+	{
+		buildingtex details;
+		details.x0 = 256;
+		details.x1 = 512;
+		details.y0 = yoffs1[i - 1];
+		details.y1 = yoffs1[i];
+		LE::Texture* tile = new LE::Texture("data/econU_buildings_1.png", LE::Vec2(details.x0 / 1280.0, details.y0 / 1280.0), LE::Vec2(256.0 / 1280.0, (details.y1 - details.y0) / 1280.0f));
+		textures.push_back(tile);
+		tile_data.push_back(details);
+	}
+
+	for (int i = 1; i < 8; i++)
+	{
+		buildingtex details;
+		details.x0 = 0;
+		details.x1 = 256;
+		details.y0 = yoffs0[i - 1];
+		details.y1 = yoffs0[i];
+		LE::Texture* tile = new LE::Texture("data/econU_buildings_1.png", LE::Vec2(details.x0 / 1280.0, details.y0 / 1280.0), LE::Vec2(256.0 / 1280.0, (details.y1 - details.y0) / 1280.0f));
+		textures.push_back(tile);
+		tile_data.push_back(details);
+	}
+
+
+	std::mt19937 rng;
+	std::uniform_int_distribution<int> dist(0, size(tile_data) - 1);
 
 	int buildingSize = blockSizeY - 4;
 	for (int x = 3; x < 256; x += blockSizeX)
@@ -214,6 +247,14 @@ void City::PlaceBuildings()
 		{
 			for (int xo = 0; xo < 2; xo++)
 			{
+				float x0, x1, y0, y1;
+				LE::Texture* tex;
+				// pick a random building
+				int ib = dist(rng);
+				x0 = tile_data[ib].x0;
+				x1 = tile_data[ib].x1;
+				y0 = tile_data[ib].y0;
+				y1 = tile_data[ib].y1;
 				// place a building 
 				Vec2 centre = Vec2(x+xo*(buildingSize+2), y) + Vec2(buildingSize, buildingSize) * 0.5f;
 				Vec2 isoPos = isoMap->MapToIso(centre);
@@ -222,7 +263,7 @@ void City::PlaceBuildings()
 				float yOffset = ((y1 - y0) / (x1 - x0) - 0.5f) * buildingSize;
 				Vec2 spriteCentre = isoPos - Vec2(0, yOffset);
 				spriteCentre -= Vec2(width * 0.5, height * 0.5);
-				SpriteComponent* sc = new SpriteComponent(*tile, width);
+				SpriteComponent* sc = new SpriteComponent(*textures[ib], width);
 				sc->SetClip();
 				sc->SetSort();
 				sc->SetZ(isoPos.y);
