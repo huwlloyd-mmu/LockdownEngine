@@ -118,7 +118,7 @@ City::City()
 
 	// now make the tilemap
 	LE::GameObject* obj = new LE::GameObject();
-	new DebugPosition(this);
+	//new DebugPosition(this);
 	isoMap =  new LE::IsoMapComponent(nx, ny, 1.0f);
 	for (int i = 0; i < 4; i++)
 	{
@@ -149,6 +149,7 @@ City::City()
 	}
 
 	// add some vehicles
+	MakeVehicleProtos();
 	for (int i = 0; i < 200; i++)
 	{
 		vehicles.push_back(new Vehicle(this));
@@ -171,6 +172,41 @@ void City::Update(float dt)
 		v->Update(dt);
 }
 
+void City::MakeVehicleProtos()
+{
+	std::string texFiles[6] = { "data/black_vehicles.png","data/blue_vehicles.png", "data/white_vehicles.png",
+		"data/grey_vehicles.png", "data/red_vehicles.png", "data/yellow_vehicles.png" };
+
+	int count = 0;
+	for (int i = 0; i < 6; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			LE::Texture* frames[4];
+			for (int k = 0; k < 4; k++)
+			{
+				frames[k] = new LE::Texture(texFiles[i], LE::Vec2(k * 0.25f, j * 0.125f), LE::Vec2(0.125f, 0.125f));
+			}
+			LE::AnimatedSpriteComponent* sc = new LE::AnimatedSpriteComponent(1.5f);
+			std::vector<LE::Texture*> mode;
+			std::string names[4] = { "up", "left", "down", "right" };
+			sc->SetClip();
+			sc->SetSort();
+
+			for (int k = 0; k < 4; k++)
+			{
+				mode.clear();
+				mode.push_back(frames[k]);
+				LE::Animation* anim = new LE::Animation(mode, 100.0f, false);
+				sc->AddMode(names[k], anim);
+			}
+			vehicleProtos[count] = new LE::GameObject();
+			vehicleProtos[count]->AddComponent(sc);
+			++count;
+		}
+	}
+
+}
 void City::MakePedProtos()
 {
 	for (int j = 0; j < 25; j++)

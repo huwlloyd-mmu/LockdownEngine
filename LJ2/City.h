@@ -36,11 +36,13 @@ class City
 	// vehicles
 	std::vector<Vehicle*> vehicles;
 	void PlaceBuildings();
+	void MakeVehicleProtos();
 public:
 	Walkways* walkways;
 	Roads* roads;
 
 	LE::GameObject* pedProto[25]; // prototype game objects for a pedestrian
+	LE::GameObject* vehicleProtos[48]; // prototype game objects for vehicles
 	City();
 	LE::Vec2 WorldToIso(const LE::Vec2& pos) { return isoMap->MapToIso(pos); }
 	LE::Vec2 IsoToWorld(const LE::Vec2& pos) { return isoMap->IsoToMap(pos); }

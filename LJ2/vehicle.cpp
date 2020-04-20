@@ -1,6 +1,19 @@
 #include "vehicle.h"
 #include "city.h"
 #include "roads.h"
+#include "AnimatedSprite.h"
+
+Vehicle::Vehicle( City * city )
+{
+	c = city;
+	rng = std::mt19937(std::random_device()());
+
+	std::uniform_int_distribution<int> dist(0, 47);
+	obj = LE::Game::SpawnCopy(city->vehicleProtos[dist(rng)]);
+	state = OnRoad;
+	PlaceRandomly();
+
+}
 
 void Vehicle::UpdateOnRoad(float dt) 
 {
@@ -49,7 +62,7 @@ void Vehicle::UpdateOnRoad(float dt)
 			std::cout << "shouldn't be here, either!" << std::endl;
 		pos = v1;
 	}
-	pos = c->WorldToIso(pos);
+	pos = c->WorldToIso(pos) - LE::Vec2(0.0,0.75f);
 	obj->SetPosition(pos);
 }
 
@@ -67,7 +80,7 @@ void Vehicle::UpdateTurning1(float dt)
 		state = Turning2;
 		curDistance = 0.0f;
 	}
-	pos = c->WorldToIso(pos);
+	pos = c->WorldToIso(pos) - LE::Vec2(0.0f,0.75f);
 	obj->SetPosition(pos);
 
 }
@@ -76,6 +89,21 @@ void Vehicle::UpdateTurning2(float dt)
 {
 	LE::Vec2 v0 = c->roads->junctions[curJunction].turnPoints[turningPoint];
 	LE::Vec2 v1 = c->roads->roads[c->roads->junctions[curJunction].roadsOut[nextRoad]].v0;
+
+	if (v0.y == v1.y)
+	{
+		if (v1.x < v0.x)
+			obj->GetComponent<LE::AnimatedSpriteComponent>()->StartMode("left");
+		else
+			obj->GetComponent<LE::AnimatedSpriteComponent>()->StartMode("right");
+	}
+	else
+	{
+		if (v1.y < v0.y)
+			obj->GetComponent<LE::AnimatedSpriteComponent>()->StartMode("down");
+		else
+			obj->GetComponent<LE::AnimatedSpriteComponent>()->StartMode("up");
+	}
 
 	float len = (v1 - v0).magnitude();
 	curDistance += dt * 1.0f;
@@ -87,7 +115,7 @@ void Vehicle::UpdateTurning2(float dt)
 		curRoad = c->roads->junctions[curJunction].roadsOut[nextRoad];
 		curDistance = 0;
 	}
-	pos = c->WorldToIso(pos);
+	pos = c->WorldToIso(pos) - LE::Vec2(0.0f,0.75f);
 	obj->SetPosition(pos);
 }
 void Vehicle::UpdateWaiting(float dt)
@@ -125,7 +153,25 @@ void Vehicle::PlaceRandomly()
 	std::uniform_int_distribution<int> dist(0, c->roads->roads.size() - 1);
 	curRoad = dist(rng);
 	// pick a random distance
-	float len = (c->roads->roads[curRoad].v1 - c->roads->roads[curRoad].v0).magnitude();
+	LE::Vec2 v0, v1;
+	v0 = c->roads->roads[curRoad].v0;
+	v1 = c->roads->roads[curRoad].v1;
+	float len = (v1 - v0).magnitude();
 	std::uniform_real_distribution<float> fdist(0, len);
 	curDistance = fdist(rng);
+	if (v0.y == v1.y)
+	{
+		if ( v1.x < v0.x)
+			obj->GetComponent<LE::AnimatedSpriteComponent>()->StartMode("left");
+		else
+			obj->GetComponent<LE::AnimatedSpriteComponent>()->StartMode("right");
+	}
+	else
+	{ 
+		if (v1.y < v0.y)
+			obj->GetComponent<LE::AnimatedSpriteComponent>()->StartMode("down");
+		else
+			obj->GetComponent<LE::AnimatedSpriteComponent>()->StartMode("up");
+	}
+
 }

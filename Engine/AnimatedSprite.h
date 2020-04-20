@@ -39,6 +39,7 @@ namespace LE
 			else
 				curTime = fmax(curTime, duration);
 			int iFrame = curTime * curAnim->GetFrameRate();
+			iFrame %= curAnim->GetNumFrames();
 			Texture* curTexture = curAnim->GetFrame(iFrame);
 			sc->SetTexture(*curTexture);
 		}

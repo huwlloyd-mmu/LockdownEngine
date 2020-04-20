@@ -31,15 +31,7 @@ class Vehicle
 	void UpdateTurning2(float dt);
 	void UpdateWaiting(float dt);
 public:
-	Vehicle(City *city) : c(city)
-	{
-		rng = std::mt19937(std::random_device()());
-		PlaceRandomly();
-		obj = new LE::GameObject();
-		obj->AddComponent(new LE::CircleComponent(0.5f, sf::Color(255, 0, 255, 255), sf::Color(255, 0, 255, 255)));
-		LE::Game::AddToLevel(obj);
-		state = OnRoad;
-	}
+	Vehicle(City* city);
 	void PlaceRandomly();
 	void Update(float dt);
 };
