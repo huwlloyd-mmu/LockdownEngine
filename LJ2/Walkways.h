@@ -20,6 +20,6 @@ public:
 	};
 	std::vector<Edge> e; // the edges of the graph
 public:
-	Walkways(City* city);
+	Walkways(City* city, int border);
 	void DebugDraw();
 };

@@ -2,8 +2,10 @@
 #include "LockdownEngine.h"
 #include "IsoMap.h"
 #include "Walkways.h"
+#include "roads.h"
 #include "AnimatedSprite.h"
 #include "DbgPosition.h"
+#include "Vehicle.h"
 
 void CityUpdater::Update(float dt)
 {
@@ -116,7 +118,7 @@ City::City()
 
 	// now make the tilemap
 	LE::GameObject* obj = new LE::GameObject();
-	//new DebugPosition(this);
+	new DebugPosition(this);
 	isoMap =  new LE::IsoMapComponent(nx, ny, 1.0f);
 	for (int i = 0; i < 4; i++)
 	{
@@ -136,13 +138,20 @@ City::City()
 	isoMap->CreateSprites();
 	obj->AddComponent(isoMap);
 	LE::Game::AddToLevel(obj);
-	walkways = new Walkways(this);
+	walkways = new Walkways(this, 2);
 	MakePedProtos();
+	roads = new Roads(this, 2);
 
 	// add some pedestrians
-	for (int i = 0; i < 1000; i++)
+	for (int i = 0; i < 2000; i++)
 	{
 		peds.push_back(new Pedestrian(this));
+	}
+
+	// add some vehicles
+	for (int i = 0; i < 200; i++)
+	{
+		vehicles.push_back(new Vehicle(this));
 	}
 	// add the updater game object
 	updater = new LE::GameObject();
@@ -158,6 +167,8 @@ void City::Update(float dt)
 {
 	for (auto p : peds)
 		p->Update(dt);
+	for (auto v : vehicles)
+		v->Update(dt);
 }
 
 void City::MakePedProtos()
@@ -237,7 +248,7 @@ void City::PlaceBuildings()
 	}
 
 
-	std::mt19937 rng;
+	std::mt19937 rng = std::mt19937(std::random_device()());
 	std::uniform_int_distribution<int> dist(0, size(tile_data) - 1);
 
 	int buildingSize = blockSizeY - 4;

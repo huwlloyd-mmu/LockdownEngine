@@ -1,11 +1,11 @@
 #include "Walkways.h"
 #include "City.h"
 
-Walkways::Walkways(City* city)
+Walkways::Walkways(City* city, int border)
 {
+	// border is the number of city blocks around the outside of town that are non-navigable
 	// first create all the vertices.
 	const static float inset = 0.2f; // distance in grid units that walkway is offset from the road
-	int border = 2; // number of city blocks around the outside of town that are non-navigable
 
 	int nCellsX, nCellsY;
 	int roadWidth = city->GetRoadWidth();

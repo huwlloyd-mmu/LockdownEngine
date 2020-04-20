@@ -10,6 +10,8 @@ Pedestrian::Pedestrian(City* city) : city(city), rng(std::mt19937(std::random_de
 	obj->AddComponent(new LE::CircleComponent(0.5f, sf::Color(255, 0, 0, 255), sf::Color(255, 0, 0, 255)));
 	*/
 	// pick a random skin
+	rng = std::mt19937(std::random_device()());
+
 	std::uniform_int_distribution<int> dist(0, 24);
 	obj = LE::Game::SpawnCopy(city->pedProto[dist(rng)]);
 

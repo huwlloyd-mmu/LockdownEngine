@@ -1,5 +1,5 @@
 #pragma once
-
+#include <cmath>
 namespace LE
 {
 	// a 2d vector class

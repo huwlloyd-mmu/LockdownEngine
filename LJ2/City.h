@@ -2,8 +2,10 @@
 #include <vector>
 #include "IsoMap.h"
 #include "Pedestrian.h"
-class Walkways;
+#include "vehicle.h"
 
+class Walkways;
+class Roads;
 class City; // forward dec
 class CityUpdater : public LE::Component
 {
@@ -31,9 +33,13 @@ class City
 	std::vector<Pedestrian*> peds;
 	void AddPedestrians();
 	void MakePedProtos(); // helper function to create pedProto
+	// vehicles
+	std::vector<Vehicle*> vehicles;
 	void PlaceBuildings();
 public:
 	Walkways* walkways;
+	Roads* roads;
+
 	LE::GameObject* pedProto[25]; // prototype game objects for a pedestrian
 	City();
 	LE::Vec2 WorldToIso(const LE::Vec2& pos) { return isoMap->MapToIso(pos); }

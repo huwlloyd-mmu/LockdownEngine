@@ -4,6 +4,7 @@
 #include "City.h"
 #include "DebugLines.h"
 #include "Walkways.h"
+#include "Roads.h"
 #include <iomanip>
 #include <iostream>
 #include <sstream>
@@ -44,6 +45,15 @@ public:
 			dbglines.push_back(c->WorldToIso(c->walkways->v[e.v1].pos));
 		}
 		DebugLines::Draw(dbglines, sf::Color(0, 255, 0, 255));
+		// draw the roads
+		dbglines.clear();
+		for (auto r : c->roads->roads)
+		{
+			dbglines.push_back(c->WorldToIso(r.v0));
+			dbglines.push_back(c->WorldToIso(r.v1));
+		}
+		DebugLines::Draw(dbglines, sf::Color(0, 0, 255, 255));
+
 	}
 
 	virtual Component* Clone() const { return new DBGPosBehaviour(c); }

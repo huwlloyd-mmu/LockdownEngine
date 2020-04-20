@@ -24,6 +24,12 @@
     <ClInclude Include="Pedestrian.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Roads.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="vehicle.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -39,6 +45,12 @@
       <Filter>C++ Files</Filter>
     </ClCompile>
     <ClCompile Include="Pedestrian.cpp">
+      <Filter>C++ Files</Filter>
+    </ClCompile>
+    <ClCompile Include="roads.cpp">
+      <Filter>C++ Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vehicle.cpp">
       <Filter>C++ Files</Filter>
     </ClCompile>
   </ItemGroup>
