@@ -138,12 +138,12 @@ City::City()
 	isoMap->CreateSprites();
 	obj->AddComponent(isoMap);
 	LE::Game::AddToLevel(obj);
-	walkways = new Walkways(this, 2);
-	MakePedProtos();
 	roads = new Roads(this, 2);
+	walkways = new Walkways(this, 2);
 
 	// add some pedestrians
-	for (int i = 0; i < 2000; i++)
+	MakePedProtos();
+	for (int i = 0; i < 500; i++)
 	{
 		peds.push_back(new Pedestrian(this));
 	}
@@ -187,7 +187,7 @@ void City::MakeVehicleProtos()
 			{
 				frames[k] = new LE::Texture(texFiles[i], LE::Vec2(k * 0.25f, j * 0.125f), LE::Vec2(0.125f, 0.125f));
 			}
-			LE::AnimatedSpriteComponent* sc = new LE::AnimatedSpriteComponent(1.5f);
+			LE::AnimatedSpriteComponent* sc = new LE::AnimatedSpriteComponent(vehicleSpriteSize);
 			std::vector<LE::Texture*> mode;
 			std::string names[4] = { "up", "left", "down", "right" };
 			sc->SetClip();

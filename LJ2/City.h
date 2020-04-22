@@ -16,6 +16,8 @@ public:
 	virtual CityUpdater* Clone() const { return nullptr; }
 };
 
+constexpr float vehicleSpriteSize = 1.8f;
+
 class City
 {
 	// a procedural isometric city

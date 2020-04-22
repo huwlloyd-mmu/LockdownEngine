@@ -17,6 +17,7 @@ public:
 	{
 		int v0;
 		int v1;
+		int junction; 
 	};
 	std::vector<Edge> e; // the edges of the graph
 public:

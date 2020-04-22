@@ -2,6 +2,7 @@
 #include "Circle.h"
 #include "city.h"
 #include "AnimatedSprite.h"
+#include "roads.h"
 
 Pedestrian::Pedestrian(City* city) : city(city), rng(std::mt19937(std::random_device()()))
 {
@@ -55,6 +56,13 @@ void Pedestrian::PlaceRandomly()
 
 void Pedestrian::Update(float dt)
 {
+	// check if we need to wait at a junction
+	if (city->walkways->e[curEdge].junction != -1)
+		if (!(city->roads->junctions[city->walkways->e[curEdge].junction].IsFree()))
+			return; // wait
+		else
+			city->roads->junctions[city->walkways->e[curEdge].junction].AddPed(this); // register
+
 	// move along the current edge in the current direction
 	float delta = 1.0f * dt; 
 
@@ -78,6 +86,10 @@ void Pedestrian::Update(float dt)
 		{
 			newEdge = city->walkways->v[curVertex].edges[dist(rng)];
 		} while (newEdge == curEdge);
+		// if we were on a junction, release it
+		if (city->walkways->e[curEdge].junction != -1)
+			city->roads->junctions[city->walkways->e[curEdge].junction].RemovePed(this); // deregister
+
 		curEdge = newEdge;
 		if (curVertex == city->walkways->e[curEdge].v0)
 		{

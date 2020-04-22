@@ -87,3 +87,20 @@ Roads::Roads(City* c, int border)
 		}
 	}
 }
+
+bool Roads::Junction::Acquire(Vehicle* v)
+{
+	// is this thing already in the queue?
+	if (std::find(fifo.begin(), fifo.end(), v) == fifo.end())
+	{
+		// if not add it at the back
+		fifo.push_back(v);
+	}
+	return v == *fifo.begin() && peds.size() == 0;
+}
+
+void Roads::Junction::Release()
+{
+	// pop the first in the queue
+	fifo.pop_front();
+}

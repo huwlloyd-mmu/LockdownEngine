@@ -62,17 +62,20 @@ void Vehicle::UpdateOnRoad(float dt)
 			std::cout << "shouldn't be here, either!" << std::endl;
 		pos = v1;
 	}
-	pos = c->WorldToIso(pos) - LE::Vec2(0.0,0.75f);
+	pos = c->WorldToIso(pos) - LE::Vec2(vehicleSpriteSize*0.5f,vehicleSpriteSize*0.5f);
 	obj->SetPosition(pos);
+	obj->GetComponent<LE::AnimatedSpriteComponent>()->SetZ(pos.y);
 }
 
 void Vehicle::UpdateTurning1(float dt) 
 {
+	if (!c->roads->junctions[curJunction].Acquire(this))
+		return;
 	LE::Vec2 v0 = c->roads->roads[curRoad].v1;
 	LE::Vec2 v1 = c->roads->junctions[curJunction].turnPoints[turningPoint];
 
 	float len = (v1 - v0).magnitude();
-	curDistance += dt * 1.0f;
+	curDistance += dt * 1.5f;
 	LE::Vec2 pos = v0 + (v1 - v0) * (curDistance / len);
 	if (curDistance > len)
 	{
@@ -80,8 +83,9 @@ void Vehicle::UpdateTurning1(float dt)
 		state = Turning2;
 		curDistance = 0.0f;
 	}
-	pos = c->WorldToIso(pos) - LE::Vec2(0.0f,0.75f);
+	pos = c->WorldToIso(pos) - LE::Vec2(vehicleSpriteSize*0.5f,vehicleSpriteSize*0.5f);
 	obj->SetPosition(pos);
+	obj->GetComponent<LE::AnimatedSpriteComponent>()->SetZ(pos.y);
 
 }
 
@@ -106,7 +110,7 @@ void Vehicle::UpdateTurning2(float dt)
 	}
 
 	float len = (v1 - v0).magnitude();
-	curDistance += dt * 1.0f;
+	curDistance += dt * 1.5f;
 	LE::Vec2 pos = v0 + (v1 - v0) * (curDistance / len);
 	if (curDistance > len)
 	{
@@ -114,13 +118,11 @@ void Vehicle::UpdateTurning2(float dt)
 		state = OnRoad;
 		curRoad = c->roads->junctions[curJunction].roadsOut[nextRoad];
 		curDistance = 0;
+		c->roads->junctions[curJunction].Release(); // release the mutex
 	}
-	pos = c->WorldToIso(pos) - LE::Vec2(0.0f,0.75f);
+	pos = c->WorldToIso(pos) - LE::Vec2(vehicleSpriteSize*0.5f,vehicleSpriteSize*0.5f);
 	obj->SetPosition(pos);
-}
-void Vehicle::UpdateWaiting(float dt)
-{
-
+	obj->GetComponent<LE::AnimatedSpriteComponent>()->SetZ(pos.y);
 }
 
 void Vehicle::Update(float dt)
@@ -141,9 +143,6 @@ void Vehicle::Update(float dt)
 		break;
 	case Turning2:
 		UpdateTurning2(dt);
-		break;
-	case Waiting:
-		UpdateWaiting(dt);
 		break;
 	}
 }

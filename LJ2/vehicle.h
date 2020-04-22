@@ -21,7 +21,6 @@ class Vehicle
 		OnRoad,
 		Turning1,
 		Turning2,
-		Waiting
 	};
 	State state;
 	LE::GameObject* obj;
@@ -29,7 +28,6 @@ class Vehicle
 	void UpdateOnRoad(float dt);
 	void UpdateTurning1(float dt);
 	void UpdateTurning2(float dt);
-	void UpdateWaiting(float dt);
 public:
 	Vehicle(City* city);
 	void PlaceRandomly();

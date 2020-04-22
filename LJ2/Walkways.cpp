@@ -71,43 +71,43 @@ Walkways::Walkways(City* city, int border)
 			v5 = vCount++;
 			Edge edge;
 
-			edge.v0 = v0; edge.v1 = v1;
+			edge.v0 = v0; edge.v1 = v1; edge.junction = -1;
 			e.push_back(edge);
 			v[v0].edges.push_back(edgeCount);
 			v[v1].edges.push_back(edgeCount);
 			edgeCount++;
 
-			edge.v0 = v1; edge.v1 = v4;
+			edge.v0 = v1; edge.v1 = v4; edge.junction = -1;
 			e.push_back(edge);
 			v[v1].edges.push_back(edgeCount);
 			v[v4].edges.push_back(edgeCount);
 			edgeCount++;
 
-			edge.v0 = v4; edge.v1 = v2;
+			edge.v0 = v4; edge.v1 = v2; edge.junction = -1;
 			e.push_back(edge);
 			v[v4].edges.push_back(edgeCount);
 			v[v2].edges.push_back(edgeCount);
 			edgeCount++;
 
-			edge.v0 = v2; edge.v1 = v3;
+			edge.v0 = v2; edge.v1 = v3; edge.junction = -1;
 			e.push_back(edge);
 			v[v2].edges.push_back(edgeCount);
 			v[v3].edges.push_back(edgeCount);
 			edgeCount++;
 
-			edge.v0 = v3; edge.v1 = v5;
+			edge.v0 = v3; edge.v1 = v5; edge.junction = -1;
 			e.push_back(edge);
 			v[v3].edges.push_back(edgeCount);
 			v[v5].edges.push_back(edgeCount);
 			edgeCount++;
 
-			edge.v0 = v5; edge.v1 = v0;
+			edge.v0 = v5; edge.v1 = v0; edge.junction = -1;
 			e.push_back(edge);
 			v[v5].edges.push_back(edgeCount);
 			v[v0].edges.push_back(edgeCount);
 			edgeCount++;
 
-			edge.v0 = v4; edge.v1 = v5;
+			edge.v0 = v4; edge.v1 = v5; edge.junction = -1;
 			e.push_back(edge);
 			v[v4].edges.push_back(edgeCount);
 			v[v5].edges.push_back(edgeCount);
@@ -131,13 +131,17 @@ Walkways::Walkways(City* city, int border)
 				u0 = (i * nCellsY + j - 1 )*6 + 1;
 				u1 = (i * nCellsY + j - 1 )*6 + 2;
 
-				edge.v0 = v0; edge.v1 = u0;
+				int ij0 = i * (nCellsY + 1) + j;
+				int ij1 = (i+1) * (nCellsY + 1) + j;
+
+
+				edge.v0 = v0; edge.v1 = u0; edge.junction = ij0;
 				e.push_back(edge);
 				v[v0].edges.push_back(edgeCount);
 				v[u0].edges.push_back(edgeCount);
 				edgeCount++;
 
-				edge.v0 = v1; edge.v1 = u1;
+				edge.v0 = v1; edge.v1 = u1; edge.junction = ij1;
 				e.push_back(edge);
 				v[v1].edges.push_back(edgeCount);
 				v[u1].edges.push_back(edgeCount);
@@ -153,13 +157,16 @@ Walkways::Walkways(City* city, int border)
 				u0 = ((i +1 ) * nCellsY + j) * 6 + 1;
 				u1 = ((i +1 ) * nCellsY + j) * 6 + 0;
 
-				edge.v0 = v0; edge.v1 = u0;
+				int ij0 = (i + 1)* (nCellsY + 1) + j+1;
+				int ij1 = (i + 1) * (nCellsY + 1) + j;
+
+				edge.v0 = v0; edge.v1 = u0; edge.junction = ij0;
 				e.push_back(edge);
 				v[v0].edges.push_back(edgeCount);
 				v[u0].edges.push_back(edgeCount);
 				edgeCount++;
 
-				edge.v0 = v1; edge.v1 = u1;
+				edge.v0 = v1; edge.v1 = u1; edge.junction = ij1;
 				e.push_back(edge);
 				v[v1].edges.push_back(edgeCount);
 				v[u1].edges.push_back(edgeCount);

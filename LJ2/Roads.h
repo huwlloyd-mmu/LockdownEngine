@@ -1,7 +1,11 @@
 #pragma once
 #include "Vec2.h"
 #include <vector>
+#include <list>
+#include <set>
 class City;
+class Vehicle;
+class Pedestrian;
 
 class Roads
 {
@@ -13,6 +17,16 @@ public:
 		int roadsIn[4];
 		int roadsOut[4];
 		LE::Vec2 turnPoints[4]; // turning points for the various roads out
+		
+		// pedestrians using the junction
+		std::set<Pedestrian*> peds;
+		// the vehicle queueing system, works via a mutex with FIFO
+		std::list<Vehicle*> fifo;
+		bool Acquire(Vehicle* v); 		
+		void Release();
+		bool IsFree() { return fifo.size() == 0 || peds.size() > 0; }
+		void AddPed(Pedestrian* ped) { peds.insert(ped); }
+		void RemovePed(Pedestrian* ped) { peds.erase(ped); }
 	};
 
 	struct Road
