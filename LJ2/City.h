@@ -21,8 +21,6 @@ constexpr float vehicleSpriteSize = 1.8f;
 class City
 {
 	// a procedural isometric city
-	const int nx = 256;
-	const int ny = 256;
 	LE::IsoMapComponent* isoMap;
 	LE::IsoMapComponent* isoMapBuildings;
 	std::vector<std::vector<unsigned int>> tiles;
@@ -30,6 +28,10 @@ class City
 	const int blockSizeX = 22;
 	const int blockSizeY = 12;
 	const int roadWidth = 2;
+	const int bordery = 4;
+	const int borderx = 2;
+	const int nx = 256 + blockSizeX * borderx * 2;
+	const int ny = 256 + blockSizeY * bordery * 2;;
 	LE::GameObject* updater;
 	// pedestrians
 	std::vector<Pedestrian*> peds;
@@ -51,6 +53,8 @@ public:
 	int GetBlockSizeX() const { return blockSizeX;  }
 	int GetBlockSizeY() const { return blockSizeY; }
 	int GetRoadWidth() const { return roadWidth; }
+	int GetBorderX() const { return borderx; }
+	int GetBorderY() const { return bordery; }
 	int GetNX() const { return nx; }
 	int GetNY() const { return ny; }
 	void Update(float dt);

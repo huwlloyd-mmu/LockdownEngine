@@ -37,5 +37,5 @@ public:
 
 	std::vector<Junction> junctions;
 	std::vector<Road> roads;
-	Roads(City* c, int border);
+	Roads(City* c);
 };

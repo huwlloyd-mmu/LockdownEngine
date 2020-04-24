@@ -1,7 +1,7 @@
 #include "Walkways.h"
 #include "City.h"
 
-Walkways::Walkways(City* city, int border)
+Walkways::Walkways(City* city)
 {
 	// border is the number of city blocks around the outside of town that are non-navigable
 	// first create all the vertices.
@@ -11,8 +11,8 @@ Walkways::Walkways(City* city, int border)
 	int roadWidth = city->GetRoadWidth();
 	int blockSizeX = city->GetBlockSizeX();
 	int blockSizeY = city->GetBlockSizeY();
-	nCellsX = city->GetNX() / blockSizeX - border*2;
-	nCellsY = city->GetNY() / blockSizeY - border*2;
+	nCellsX = city->GetNX() / blockSizeX - city->GetBorderX()*2;
+	nCellsY = city->GetNY() / blockSizeY - city->GetBorderY()*2;
 
 	// vertices
 	for (int i = 0; i < nCellsX; i++)
@@ -23,26 +23,26 @@ Walkways::Walkways(City* city, int border)
 			Vertex vert;
 			LE::Vec2 pos[4];
 			// six vertices for each cell
-			x = (border + i) * blockSizeX + roadWidth + inset;
-			y = (border + j) * blockSizeY + roadWidth + inset;
+			x = (city->GetBorderX() + i) * blockSizeX + roadWidth + inset;
+			y = (city->GetBorderY() + j) * blockSizeY + roadWidth + inset;
 			vert.pos = LE::Vec2(x, y);
 			pos[0] = vert.pos;
 			v.push_back(vert);
 
-			x = (border + i) * blockSizeX + roadWidth + inset;
-			y = (border + j + 1) * blockSizeY - inset;
+			x = (city->GetBorderX() + i) * blockSizeX + roadWidth + inset;
+			y = (city->GetBorderY() + j + 1) * blockSizeY - inset;
 			vert.pos = LE::Vec2(x, y);
 			pos[1] = vert.pos;
 			v.push_back(vert);
 
-			x = (border + i+1) * blockSizeX  - inset;
-			y = (border + j+1) * blockSizeY  - inset;
+			x = (city->GetBorderX() + i+1) * blockSizeX  - inset;
+			y = (city->GetBorderY() + j+1) * blockSizeY  - inset;
 			vert.pos = LE::Vec2(x, y);
 			pos[2] = vert.pos;
 			v.push_back(vert);
 
-			x = (border + i+1) * blockSizeX - inset;
-			y = (border + j) * blockSizeY + roadWidth + inset;
+			x = (city->GetBorderX() + i+1) * blockSizeX - inset;
+			y = (city->GetBorderY() + j) * blockSizeY + roadWidth + inset;
 			vert.pos = LE::Vec2(x, y);
 			pos[3] = vert.pos;
 			v.push_back(vert);

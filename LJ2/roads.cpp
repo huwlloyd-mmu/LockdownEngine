@@ -1,7 +1,7 @@
 #include "roads.h"
 #include "city.h"
 
-Roads::Roads(City* c, int border)
+Roads::Roads(City* c)
 {
 	city = c;
 
@@ -9,15 +9,15 @@ Roads::Roads(City* c, int border)
 	int roadWidth = city->GetRoadWidth();
 	int blockSizeX = city->GetBlockSizeX();
 	int blockSizeY = city->GetBlockSizeY();
-	nCellsX = city->GetNX() / blockSizeX - border * 2;
-	nCellsY = city->GetNY() / blockSizeY - border * 2;
+	nCellsX = city->GetNX() / blockSizeX - city->GetBorderX() * 2;
+	nCellsY = city->GetNY() / blockSizeY - city->GetBorderY() * 2;
 
 	// first create the junctions
 	for (int i = 0; i < nCellsX+1; i++)
 	{
 		for (int j = 0; j < nCellsY+1; j++)
 		{
-			LE::Vec2 junctionPos = LE::Vec2((border + i) * blockSizeX + 1.0f, (border + j) * blockSizeY + 1.0f);
+			LE::Vec2 junctionPos = LE::Vec2((city->GetBorderX() + i) * blockSizeX + 1.0f, (city->GetBorderY() + j) * blockSizeY + 1.0f);
 			Junction junction;
 			for (int k = 0; k < 4; k++)
 			{

@@ -138,8 +138,8 @@ City::City()
 	isoMap->CreateSprites();
 	obj->AddComponent(isoMap);
 	LE::Game::AddToLevel(obj);
-	roads = new Roads(this, 2);
-	walkways = new Walkways(this, 2);
+	roads = new Roads(this);
+	walkways = new Walkways(this);
 
 	// add some pedestrians
 	MakePedProtos();
@@ -288,9 +288,9 @@ void City::PlaceBuildings()
 	std::uniform_int_distribution<int> dist(0, size(tile_data) - 1);
 
 	int buildingSize = blockSizeY - 4;
-	for (int x = 3; x < 256; x += blockSizeX)
+	for (int x = 3; x < nx-blockSizeX; x += blockSizeX)
 	{
-		for (int y = 3; y < 256; y += blockSizeY)
+		for (int y = 3; y < ny-blockSizeY ; y += blockSizeY)
 		{
 			for (int xo = 0; xo < 2; xo++)
 			{

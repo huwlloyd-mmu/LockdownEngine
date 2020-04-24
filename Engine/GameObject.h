@@ -42,14 +42,16 @@ namespace LE
 			if (!active)
 				return;
 			for (auto c : components)
-				c->Update(dt);
+				if ( c->active )
+					c->Update(dt);
 		}
 		void Draw(sf::RenderWindow& window ) const
 		{
 			if (!active)
 				return;
 			for (auto c : components)
-				c->Draw(window, getTransform());
+				if ( c->visible )
+					c->Draw(window, getTransform());
 		}
 		void SetUI(bool nui) { ui = nui; } 
 		const std::vector<Component*>& GetComponents() const { return components; }
