@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29209.62
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LockdownEngine", "LockdownEngine.vcxproj", "{DCC8AF27-F2D4-4AF1-A39B-E30C95A15FAF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DCC8AF27-F2D4-4AF1-A39B-E30C95A15FAF}.Debug|x64.ActiveCfg = Debug|x64
+		{DCC8AF27-F2D4-4AF1-A39B-E30C95A15FAF}.Debug|x64.Build.0 = Debug|x64
+		{DCC8AF27-F2D4-4AF1-A39B-E30C95A15FAF}.Release|x64.ActiveCfg = Release|x64
+		{DCC8AF27-F2D4-4AF1-A39B-E30C95A15FAF}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {01676A39-FEF0-413C-991D-F4F2319E17B3}
+	EndGlobalSection
+EndGlobal
