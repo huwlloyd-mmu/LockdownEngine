@@ -12,3 +12,5 @@ Not including game data for any of these - this will be on the associated itch.i
 ### Games
 
 __LJ1__: A bubble burst game, for the first theme 'Power of 2'.  [Game Page](https://hml.itch.io/2048buster) 
+
+__LJ2__: This is an isometric city simulator that didn't quite come off. It has a city with cars and people, but it doesn't really do much. [Game Page](https://hml.itch.io/flaneur-simulator)
