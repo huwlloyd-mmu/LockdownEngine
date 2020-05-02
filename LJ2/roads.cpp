@@ -104,3 +104,26 @@ void Roads::Junction::Release()
 	// pop the first in the queue
 	fifo.pop_front();
 }
+
+LE::Vec2 Roads::NearestPointOnRoads(const LE::Vec2& p)
+{
+	// I really hope this runs fast enough and I don't have to optimize it
+	float nearDistSq = 1e20f;
+	LE::Vec2 nearPoint;
+
+	for (auto r : roads)
+	{
+		float l = (p - r.v0).dot(r.v1 - r.v0) / (r.v1 - r.v0).magnsqrd();
+		if (l > 1.0f)
+			l = 1.0f;
+		if (l < 0.0f)
+			l = 0.0f;
+		LE::Vec2 np = r.v0 + (r.v1 - r.v0) * l;
+		if ((p - np).magnsqrd() < nearDistSq)
+		{
+			nearDistSq = (p - np).magnsqrd();
+			nearPoint = np;
+		}
+	}
+	return nearPoint;
+}

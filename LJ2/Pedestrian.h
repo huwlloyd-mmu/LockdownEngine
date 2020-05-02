@@ -18,7 +18,8 @@ class Pedestrian
 
 	LE::GameObject* obj;
 	LE::GameObject* highlight; // really, this should be a child object of obj. I may refactor if I get a chance.
-	
+
+	LE::Vec2 target;  // a point on a walkway to aim for.
 	enum State
 	{
 		STOPPED,
@@ -32,9 +33,12 @@ class Pedestrian
 	bool MoveAlong(float dt);
 	bool bHighlighted = false;
 public:
-	Pedestrian(City* city); 
+	Pedestrian(City* city);
 	void PlaceRandomly();
 	void Update(float dt);
-	void Highlight(bool highlight) { bHighlighted = highlight; }
-
+	void Highlight(bool on) { bHighlighted = on; highlight->SetActive(bHighlighted); }
+	LE::Vec2 GetPos() const { return pos; }
+	LE::Vec2 GetIsoPos() const { return isoPos; }
+	void Stop() { curState = STOPPED; }
+	void SetTarget(const LE::Vec2& pos);
 };

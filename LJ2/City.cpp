@@ -322,3 +322,20 @@ void City::PlaceBuildings()
 		}
 	}
 }
+
+int City::FindNearestPedestrian(const LE::Vec2& pos)
+{
+	float minDist = 1e20f;
+	int nearest = -1;
+	for (int i = 0; i < peds.size(); i++)
+	{
+		float dist = (peds[i]->GetPos() - pos).magnsqrd();
+		if (dist < minDist)
+		{
+			minDist = dist;
+			nearest = i;
+		}
+	}
+
+	return nearest;
+}

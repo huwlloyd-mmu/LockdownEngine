@@ -38,7 +38,6 @@ void Pedestrian::UpdatePosition()
 	obj->SetPosition(isoPos - LE::Vec2(0.0f,1.0f));
 	highlight->SetPosition(isoPos + LE::Vec2(-1.0f, -0.5f));
 	highlight->GetComponent<LE::SpriteComponent>()->SetZ(isoPos.y + 0.9f);
-
 }
 
 void Pedestrian::PlaceRandomly()
@@ -96,6 +95,55 @@ void Pedestrian::ChooseTurningRandom()
 
 void Pedestrian::ChooseTurningForTarget()
 {
+	int curVertex;
+	if (curEdgeDist < 0.0f)
+		curVertex = city->walkways->e[curEdge].v0;
+	else
+		curVertex = city->walkways->e[curEdge].v1;
+	std::uniform_int_distribution<int> dist(0, city->walkways->v[curVertex].edges.size() - 1);
+	int newEdge = curEdge;
+	float xDiff = target.x - pos.x;
+	float yDiff = target.y - pos.y;
+	for (int i = 0; i < city->walkways->v[curVertex].edges.size(); i++)
+	{
+		// pick any edge that takes us towards the target in either coordinate 
+		int thisEdge = city->walkways->v[curVertex].edges[i];
+		if (thisEdge != curEdge)
+		{
+			LE::Vec2 end;
+			int dir;
+			float dist = 0.0f;
+			if (curVertex == city->walkways->e[thisEdge].v0)
+			{
+				end = city->walkways->v[city->walkways->e[thisEdge].v1].pos;
+			}
+			else
+			{
+				end = city->walkways->v[city->walkways->e[thisEdge].v0].pos;
+			}
+			if ((end.x - pos.x) * xDiff >= 0.0f && (end.y - pos.y) * yDiff >= 0.0f)
+			{
+				// select this edge,
+				newEdge = thisEdge;
+				break;
+			}
+		}
+	}
+	// if we were on a junction, release it
+	if (city->walkways->e[curEdge].junction != -1)
+		city->roads->junctions[city->walkways->e[curEdge].junction].RemovePed(this); // deregister
+
+	curEdge = newEdge;
+	if (curVertex == city->walkways->e[curEdge].v0)
+	{
+		curDirection = 1;
+		curEdgeDist = 0.0f;
+	}
+	else
+	{
+		curDirection = 0;
+		curEdgeDist = (city->walkways->v[city->walkways->e[curEdge].v0].pos - city->walkways->v[city->walkways->e[curEdge].v1].pos).magnitude();
+	}
 
 }
 
@@ -137,6 +185,8 @@ void Pedestrian::Update(float dt)
 		case WALK_TO_TARGET:
 			if (MoveAlong(dt))
 				ChooseTurningForTarget();
+			if ( (pos-target).magnsqrd() < 0.1f )
+				curState = STOPPED;
 			break;
 		case STOPPED:
 			moving = false;
@@ -196,4 +246,23 @@ void Pedestrian::Update(float dt)
 			obj->GetComponent<LE::AnimatedSpriteComponent>()->StartMode("stand_left", true);
 	}
 	UpdatePosition();
+}
+void Pedestrian::SetTarget(const LE::Vec2& pos)
+{
+	target = pos; curState = WALK_TO_TARGET;
+	// do we change direction?
+	LE::Vec2 v0;
+	LE::Vec2 v1;
+	v0 = city->walkways->v[city->walkways->e[curEdge].v0].pos;
+	v1 = city->walkways->v[city->walkways->e[curEdge].v1].pos;
+
+	float xDiff = pos.x - target.x;
+	float yDiff = pos.y - target.y;
+
+	if ((v1 - v0).x * xDiff >= 0.0f && (v1 - v0).y * yDiff >= 0.0f)
+		curDirection = 0;
+	else
+		curDirection = 1;
+
+
 }

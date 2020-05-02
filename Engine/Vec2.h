@@ -23,6 +23,7 @@ namespace LE
 		float magnitude() { return sqrt(magnsqrd()); }
 		Vec2 normalized() { float m = magnitude();  return Vec2(x / m, y / m); }
 		void normalize() { float m = magnitude(); x /= m; y /= m; }
+		float dot(const Vec2& other) { return x * other.x + y * other.y; }
 		// that'll do for now.
 	};
 }

@@ -38,4 +38,5 @@ public:
 	std::vector<Junction> junctions;
 	std::vector<Road> roads;
 	Roads(City* c);
+	LE::Vec2 NearestPointOnRoads(const LE::Vec2& p);
 };

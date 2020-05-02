@@ -176,6 +176,33 @@ Walkways::Walkways(City* city)
 	}
 }
 
+LE::Vec2 Walkways::NearestPointOnWalkways(const LE::Vec2& p)
+{
+	// I really hope this runs fast enough and I don't have to optimize it
+	float nearDistSq = 1e20f;
+	LE::Vec2 nearPoint;
+
+	for (auto edge : e)
+	{
+		if (edge.junction == -1)
+		{
+			LE::Vec2 v0 = v[edge.v0].pos;
+			LE::Vec2 v1 = v[edge.v1].pos;
+			float l = (p - v0).dot(v1 - v0) / (v1 - v0).magnsqrd();
+			if (l > 1.0f)
+				l = 1.0f;
+			if (l < 0.0f)
+				l = 0.0f;
+			LE::Vec2 np = v0 + (v1 - v0) * l;
+			if ((p - np).magnsqrd() < nearDistSq)
+			{
+				nearDistSq = (p - np).magnsqrd();
+				nearPoint = np;
+			}
+		}
+	}
+	return nearPoint;
+}
 void Walkways::DebugDraw()
 {
 

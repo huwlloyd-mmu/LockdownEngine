@@ -58,4 +58,11 @@ public:
 	int GetNX() const { return nx; }
 	int GetNY() const { return ny; }
 	void Update(float dt);
+	int FindNearestPedestrian(const LE::Vec2& pos);
+	Pedestrian* GetPed(int i) const { return peds[i]; }
+	void ClearPedHighlights()
+	{
+		for (auto p : peds)
+			p->Highlight(false);
+	}
 };

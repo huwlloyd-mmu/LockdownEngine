@@ -23,4 +23,6 @@ public:
 public:
 	Walkways(City* city);
 	void DebugDraw();
+	LE::Vec2 NearestPointOnWalkways(const LE::Vec2& p);
+
 };
